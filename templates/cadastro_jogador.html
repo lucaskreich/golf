@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Cadastrar Jogador</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.png" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/static/styles.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar-->
+        <div class="border-end bg-white" id="sidebar-wrapper">
+
+            <!-- <div class="sidebar-heading border-bottom bg-light">Gerenciador de Torneios</div>
+            <div class="list-group list-group-flush">
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Cadastrar
+                    Jogadores</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Criar Torneio</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Ver Torneios</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Events</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a>
+            </div>-->
+        </div>
+        <!-- Page content wrapper-->
+        <div id="page-content-wrapper">
+
+            <!-- Top navigation-->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+
+                <div class="container-fluid"><span>Cadastro de Jogadores</span>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation"><span
+                            class="navbar-toggler-icon"></span></button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+                            <li class="nav-item active"><a class="nav-link" href="/templates/home.html">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#!">Torneios</a></li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="/templates/index.html"
+                                    role="button" data-bs-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">Cadastrar</a>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="/golf/costao-golf/add-player">Jogador</a>
+                                    <a class="dropdown-item" href="#!">Torneio</a>
+
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- Page content-->
+            <form action="{{ url_for('add_player')}}" style="padding: 50px;" method="post">
+                <label for="name">Jogador:</label><br>
+                <input type="text" id="name" name="name" placeholder="Nome Completo"><br>
+                <label for="hcp">Hcp:</label><br>
+                <input type="number" step="0.01" id=" hcp" name="hcp" placeholder="Use ponto no decimal"><br>
+                <label for="hcp_id">Hcp ID:</label><br>
+                <input type="number" id="hcp_id" name="hcp_id" placeholder="Hcp Id Bluegolf"><br>
+                <label for="cat">Categoria:</label><br>
+                <select id="cat" name="cat">
+                    <option value="M1">M1</option>
+                    <option value="M2">M2</option>
+                    <option value="M3">M3</option>
+                    <option value="M4">M4</option>
+                    <option value="F1">F1</option>
+                    <option value="F2">F2</option>
+                </select>
+
+                <button class="btn">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+
+    <div>
+        <table class="table table-dark table-striped table-bordered">
+            <h2>Jogadores já cadastrados: </h2>
+            <thead>
+                <tr>
+                    <th scope="col">Jogador</th>
+                    <th scope="col">Hcp</th>
+                    <th scope="col">hcp_id</th>
+                    <th scope="col">Categoria</th>
+                </tr>
+            <tbody>
+                {% for i in data %}
+                <tr>
+                    <th scope="row">{{i}}</th>
+                    <td>{{data[i]["hcp"]}}</td>
+                    <td>{{data[i]["hcp_id"]}}</td>
+                    <td>{{data[i]["cat"]}}</td>
+                    {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+</body>
+
+</html>
