@@ -2,12 +2,13 @@ from flask import Flask, render_template, request, url_for, redirect, flash, sen
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
-
+import os
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = 'secret-key-goes-here'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SECRET_KEY'] = 'randomkeybestkey'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
+    "postgres://rcitnsckswwcno:7c6abe6247006f30bb0996ba2455709e1d84bf1ceb454a2d3f617a434dfda411@ec2-52-86-56-90.compute-1.amazonaws.com:5432/d40gikfijsiua3",  "sqlite:///users.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 login_manager = LoginManager()
