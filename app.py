@@ -1,5 +1,7 @@
-import json
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for, redirect, flash, send_from_directory
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 
 app = Flask(__name__)
 
@@ -11,50 +13,17 @@ def home():
 
 @app.route("/golf/costao-golf/add-torneio", methods=["GET", "POST"])
 def add_torneio():
-    with open("torneio_atual.json", "r") as data_file:
-        data = json.load(data_file)
-
-    if request.method == "POST":
-        name = request.form.get("name")
-        data = request.form.get("data")
-        inscritos = request.form.get("inscritos")
-        tipo = request.form.get("tipo")
-
-        data = {
-            name:
-            {"data": data, "inscritos": inscritos, "tipo": tipo}
-        }
-        with open("torneio_atual.json", "w") as data_file:
-            json.dump(data, data_file, indent=4)
-
-        return render_template("cadastro_torneio.html", data=data)
-    return render_template("cadastro_torneio.html", data=data)
+    return render_template("cadastro_torneio.html")
 
 
 @app.route("/golf/costao-golf/add-player", methods=["GET", "POST"])
 def add_player():
-    with open("player.json", "r") as data_file:
-        data = json.load(data_file)
+    return render_template("cadastro_jogador.html")
 
-    if request.method == "POST":
-        name = request.form.get("name")
-        hcp = request.form.get("hcp")
-        hcp_id = request.form.get("hcp_id")
-        cat = request.form.get("cat")
 
-        new_data = {
-            name:
-            {"hcp": hcp, "hcp_id": hcp_id, "cat": cat}
-        }
-        with open("player.json", "r") as data_file:
-            data = json.load(data_file)
-
-            data.update(new_data)
-        with open("player.json", "w") as data_file:
-            json.dump(data, data_file, indent=4)
-
-        return render_template("cadastro_jogador.html", data=data)
-    return render_template("cadastro_jogador.html", data=data)
+@app.route("/golf/costao-golf/torneio", methods=["GET", "POST"])
+def torneio():
+    return render_template("torneio.html")
 
 
 if __name__ == "__main__":
