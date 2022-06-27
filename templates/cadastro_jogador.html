@@ -37,22 +37,23 @@
             <!-- Top navigation-->
             <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
 
-                <div class="container-fluid"><span>Cadastro de Jogadores</span>
+                <div class="container-fluid">
+                    <h1>Cadastro de Jogadores</h1>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation"><span
                             class="navbar-toggler-icon"></span></button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
-                            <li class="nav-item active"><a class="nav-link" href="/templates/home.html">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#!">Torneios</a></li>
+                            <li class="nav-item active"><a class="nav-link" href="/">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#">Quarta Nobre</a>
+                            </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="/templates/index.html"
-                                    role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">Cadastrar</a>
+                                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="/" role="button"
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Cadastrar</a>
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="/golf/costao-golf/add-player">Jogador</a>
-                                    <a class="dropdown-item" href="#!">Torneio</a>
+                                    <a class="dropdown-item" href="/golf/costao-golf/add-torneio">Torneio</a>
 
                                 </div>
                             </li>
@@ -61,7 +62,8 @@
                 </div>
             </nav>
             <!-- Page content-->
-            <form action="{{ url_for('add_player')}}" style="padding: 50px;" method="post">
+
+            <form action="{{ url_for('add_player')}}" style="padding: 50px" method="post">
                 <label for="name">Jogador:</label><br>
                 <input type="text" id="name" name="name" placeholder="Nome Completo"><br>
                 <label for="hcp">Hcp:</label><br>
@@ -77,8 +79,8 @@
                     <option value="F1">F1</option>
                     <option value="F2">F2</option>
                 </select>
-
-                <button class="btn">Cadastrar</button>
+                <br>
+                <button style="margin: 1rem 2rem" class="btn btn-primary btn-lg">Cadastrar</button>
             </form>
         </div>
     </div>
@@ -94,16 +96,20 @@
                 <tr>
                     <th scope="col">Jogador</th>
                     <th scope="col">Hcp</th>
-                    <th scope="col">hcp_id</th>
+                    <th scope="col">Hcp ID</th>
                     <th scope="col">Categoria</th>
+                    <th scope="col">
+
+                    </th>
                 </tr>
             <tbody>
-                {% for i in data %}
+                {% for i in data%}
                 <tr>
                     <th scope="row">{{i}}</th>
                     <td>{{data[i]["hcp"]}}</td>
                     <td>{{data[i]["hcp_id"]}}</td>
                     <td>{{data[i]["cat"]}}</td>
+                    <td><button>Deletar</button></td>
                     {% endfor %}
             </tbody>
         </table>

@@ -5,8 +5,30 @@ app = Flask(__name__)
 
 
 @app.route("/")
-def hello_world():
+def home():
     return render_template("home.html")
+
+
+@app.route("/golf/costao-golf/add-torneio", methods=["GET", "POST"])
+def add_torneio():
+    with open("torneio_atual.json", "r") as data_file:
+        data = json.load(data_file)
+
+    if request.method == "POST":
+        name = request.form.get("name")
+        data = request.form.get("data")
+        inscritos = request.form.get("inscritos")
+        tipo = request.form.get("tipo")
+
+        data = {
+            name:
+            {"data": data, "inscritos": inscritos, "tipo": tipo}
+        }
+        with open("torneio_atual.json", "w") as data_file:
+            json.dump(data, data_file, indent=4)
+
+        return render_template("cadastro_torneio.html", data=data)
+    return render_template("cadastro_torneio.html", data=data)
 
 
 @app.route("/golf/costao-golf/add-player", methods=["GET", "POST"])

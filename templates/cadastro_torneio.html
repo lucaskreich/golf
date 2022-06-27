@@ -1,23 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Gerenciador de Torneio</title>
+    <title>Cadastrar Torneios</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="static/favicon.png" />
+    <link rel="icon" type="image/x-icon" href="/static/favicon.png" />
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="static/styles.css" rel="stylesheet" />
+    <link href="/static/styles.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
 
 <body>
     <div class="d-flex" id="wrapper">
         <!-- Sidebar-->
-        <!-- <div class="border-end bg-white" id="sidebar-wrapper">
-            <div class="sidebar-heading border-bottom bg-light">Gerenciador de Torneios</div>
+        <div class="border-end bg-white" id="sidebar-wrapper">
+
+            <!-- <div class="sidebar-heading border-bottom bg-light">Gerenciador de Torneios</div>
             <div class="list-group list-group-flush">
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Cadastrar
                     Jogadores</a>
@@ -26,14 +29,16 @@
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Events</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a>
-            </div>
-        </div> -->
+            </div>-->
+        </div>
         <!-- Page content wrapper-->
         <div id="page-content-wrapper">
+
             <!-- Top navigation-->
             <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+
                 <div class="container-fluid">
-                    <h1>Gerenciador de Torneios</h1>
+                    <h1>Cadastro de Torneios</h1>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation"><span
@@ -43,9 +48,8 @@
                             <li class="nav-item active"><a class="nav-link" href="/">Home</a></li>
                             <li class="nav-item"><a class="nav-link" href="#!">Torneios</a></li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="/templates/index.html"
-                                    role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">Cadastrar</a>
+                                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="/" role="button"
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Cadastrar</a>
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="/golf/costao-golf/add-player">Jogador</a>
                                     <a class="dropdown-item" href="/golf/costao-golf/add-torneio">Torneio</a>
@@ -57,24 +61,52 @@
                 </div>
             </nav>
             <!-- Page content-->
-            <div class="container-fluid">
-                <h1 class="mt-4">Simple Sidebar</h1>
-                <p>The starting state of the menu will appear collapsed on smaller screens, and will appear
-                    non-collapsed on larger screens. When toggled using the button below, the menu will change.</p>
-                <p>
-                    Make sure to keep all page content within the
-                    <code>#page-content-wrapper</code>
-                    . The top navbar is optional, and just for demonstration. Just create an element with the
-                    <code>#sidebarToggle</code>
-                    ID which will toggle the menu when clicked.
-                </p>
-            </div>
+            <form class="form " action="{{ url_for('add_torneio')}}" style="padding: 50px" method="post">
+                <label for="name">Título:</label><br>
+                <input type="text" id="name" name="name" placeholder="Nome do torneio "><br>
+                <label for="data">Data:</label><br>
+                <input type="text" id=" data" name="data" placeholder="dd/mm/aaaa"><br>
+                <label for="tipo">Tipo:</label><br>
+                <select id="tipo" name="tipo">
+                    <option value="Etapa Ranking">Etapa Ranking</option>
+                    <option value="Quarta Nobre">Quarta Nobre</option>
+                    <option value="Torneio Festivo">Torneio Festivo</option>
+
+                </select>
+                <br>
+                <button style="margin: 1rem 2rem" class="btn btn-primary btn-lg">Cadastrar</button>
+            </form>
         </div>
+
     </div>
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
     <script src="js/scripts.js"></script>
+
+    <div>
+        <table class="table table-dark table-striped table-bordered">
+            <h2>Torneio em Andamento: </h2>
+            <thead>
+                <tr>
+                    <th scope="col">Título</th>
+                    <th scope="col">Data</th>
+                    <th scope="col">Jogadores inscritos</th>
+                    <th scope="col">Tipo</th>
+                </tr>
+            <tbody>
+                {% for i in data %}
+                <tr>
+                    <th scope="row">{{i}}</th>
+                    <td>{{data[i]["data"]}}</td>
+                    <td>{{data[i]["inscritos"]}}</td>
+                    <td>{{data[i]["tipo"]}}</td>
+                    {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
 </body>
 
 </html>
