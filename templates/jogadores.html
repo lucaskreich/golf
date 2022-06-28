@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="box_left ">
+<div class="box ">
     <h1>Cadastrar Novo Jogador</h1>
     <form action="{{ url_for('jogadores') }}" method="post">
         <input type="text" name="name" placeholder="Nome" required="required" />
