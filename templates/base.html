@@ -16,12 +16,10 @@
     <a class="navbar-brand" href="/">Gerenciador</a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('home') }}">Home</a>
-        </li>
+
         {% if logged_in: %}
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('login') }}">Jogadores</a>
+          <a class="nav-link" href="{{ url_for('jogadores') }}">Jogadores</a>
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('login') }}">Torneios</a>
         <li class="nav-item">
@@ -35,6 +33,9 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('register') }}">Registro</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('home') }}">Home</a>
         </li>
         {% endif %}
 

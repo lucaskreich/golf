@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="box_left ">
+    <h1>Cadastrar Novo Jogador</h1>
+    <form action="{{ url_for('jogadores') }}" method="post">
+        <input type="text" name="name" placeholder="Nome" required="required" />
+        <input type="email" name="email" placeholder="Email" />
+        <input type="number" name="hcp_id" placeholder="HCP ID" required="required" />
+        <input type="float" name="hcp_index" placeholder="HCP Index" required="required" />
+        <label for="cat">Categoria:</label>
+        <select id="cat" name="cat" placeholder="Categoria">
+            <option value="M1">M1</option>
+            <option value="M2">M2</option>
+            <option value="M3">M3</option>
+            <option value="M4">M4</option>
+            <option value="F1">F1</option>
+            <option value="F2">F2</option>
+
+        </select>
+        <label style="padding-left: 70px" for="juv"> Juvenil:</label>
+        <select id="juv" name="juv" placeholder="Juvenil">
+            <option value="Nao">Não</option>
+            <option value="Sim">Sim</option>
+
+        </select>
+        <label style="padding-left: 70px" for="senior"> Senior:</label>
+        <select id="senior" name="senior" placeholder="S">
+            <option value="Nao">Não</option>
+            <option value="Sim">Sim</option>
+
+        </select>
+        <button type="submit" class="btn btn-primary btn-block btn-large">Cadastrar</button>
+    </form>
+</div>
+
+<div class="box_left" style="width: fit-content">
+    <h1 style="padding-top:50px">Jogadores Cadastrados</h1>
+
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Hcp Index</th>
+                <th scope="col">Hcp QN</th>
+                <th scope="col">Hcp ID</th>
+                <th scope="col">Categoria</th>
+                <th scope="col">Juvenil</th>
+                <th scope="col">Senior</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <th scope="row">{{row.name}}</th>
+                <th scope="row">{{row.hcp_index}}</th>
+                <th scope="row">{{row.hcp_qn}}</th>
+                <th scope="row">{{row.hcp_id}}</th>
+                <th scope="row">{{row.cat}}</th>
+                <th scope="row">{{row.juv}}</th>
+                <th scope="row">{{row.senior}}</th>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}
