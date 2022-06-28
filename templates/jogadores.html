@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="box ">
+<div class="box_left ">
     <h1>Cadastrar Novo Jogador</h1>
     <form action="{{ url_for('jogadores') }}" method="post">
         <input type="text" name="name" placeholder="Nome" required="required" />
-        <input type="email" name="email" placeholder="Email" />
+        <!-- <input type="email" name="email" placeholder="Email" /> -->
         <input type="number" name="hcp_id" placeholder="HCP ID" required="required" />
         <input type="float" name="hcp_index" placeholder="HCP Index" required="required" />
         <label for="cat">Categoria:</label>
@@ -18,13 +18,13 @@
             <option value="F2">F2</option>
 
         </select>
-        <label style="padding-left: 70px" for="juv"> Juvenil:</label>
+        <label style="padding-left: 5px" for="juv"> Juvenil:</label>
         <select id="juv" name="juv" placeholder="Juvenil">
             <option value="Nao">Não</option>
             <option value="Sim">Sim</option>
 
         </select>
-        <label style="padding-left: 70px" for="senior"> Senior:</label>
+        <label style="padding-left: 5px" for="senior"> Senior:</label>
         <select id="senior" name="senior" placeholder="S">
             <option value="Nao">Não</option>
             <option value="Sim">Sim</option>
@@ -32,18 +32,20 @@
         </select>
         <button type="submit" class="btn btn-primary btn-block btn-large">Cadastrar</button>
     </form>
-</div>
 
-<div class="box_left" style="width: fit-content">
+
+
+</div>
+<div class="jog_cad">
     <h1 style="padding-top:50px">Jogadores Cadastrados</h1>
 
-    <table class="table table-dark">
-        <thead>
+    <table class="table table-dark table-bordered ">
+        <thead class="thead-dark">
             <tr>
+                <th scope="col">Hcp ID</th>
                 <th scope="col">Nome</th>
                 <th scope="col">Hcp Index</th>
                 <th scope="col">Hcp QN</th>
-                <th scope="col">Hcp ID</th>
                 <th scope="col">Categoria</th>
                 <th scope="col">Juvenil</th>
                 <th scope="col">Senior</th>
@@ -52,10 +54,10 @@
         <tbody>
             {% for row in rows %}
             <tr>
+                <th scope="row">{{row.hcp_id}}</th>
                 <th scope="row">{{row.name}}</th>
                 <th scope="row">{{row.hcp_index}}</th>
                 <th scope="row">{{row.hcp_qn}}</th>
-                <th scope="row">{{row.hcp_id}}</th>
                 <th scope="row">{{row.cat}}</th>
                 <th scope="row">{{row.juv}}</th>
                 <th scope="row">{{row.senior}}</th>
@@ -67,5 +69,4 @@
     </table>
 
 </div>
-
 {% endblock %}
