@@ -42,7 +42,7 @@ class Player(db.Model):
     senior = db.Column(db.String(10))
 
 
-db.create_all
+db.create_all()
 
 
 @app.route('/')
