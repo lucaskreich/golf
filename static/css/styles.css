@@ -1,5 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
+
 .btn {
 	display: inline-block;
 	*display: inline;
@@ -119,7 +120,7 @@ html {
 
 body {
 	margin: auto;
-	height: 10%;
+	height: 100%;
 	font-family: 'Open Sans', sans-serif;
 	background: #0b316e;
 	/*background: -moz-radial-gradient(0% 100%, ellipse cover, rgba(104, 128, 138, .4) 10%, rgba(138, 114, 76, 0) 40%), -moz-linear-gradient(top, rgba(57, 173, 219, .25) 0%, rgba(42, 60, 87, .4) 100%), -moz-linear-gradient(-45deg, #670d10 0%, #092756 100%);
@@ -141,10 +142,10 @@ p {
 }
 
 .box {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin: -150px 0 0 -150px;
+	position: relative;
+	top: 10%;
+	left: 10%;
+	margin: 30px 0 0 30px;
 	width: 400px;
 	height: 400px;
 }
@@ -157,7 +158,9 @@ p {
 }
 
 .container {
-	margin-top: 10rem;
+	margin-top: 0rem;
+	position: fixed;
+	padding-left: 250px;
 	text-align: center;
 	height: 100%;
 	margin: auto;
@@ -196,8 +199,8 @@ input:focus {
 
 .box_left {
 	position: relative;
-	top: 12%;
-	left: 20%;
+	top: 5%;
+	left: 5%;
 	margin: 10px 0 0 10px;
 	width: 500px;
 	height: 300px;
@@ -209,9 +212,8 @@ input:focus {
 
 .jog_cad {
 	position: relative;
-	top: 12%;
-	left: 20%;
-	margin: 10px 0 0 10px;
+	left: 5%;
+	margin: 35px 0 0 10px;
 	width: fit-content;
 	height: 300px;
 	color: #fff;

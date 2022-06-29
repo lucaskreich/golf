@@ -2,6 +2,7 @@
 from flask import Flask, render_template, request, url_for, redirect, flash, send_from_directory
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import desc
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 import os
 
@@ -40,6 +41,14 @@ class Player(db.Model):
     cat = db.Column(db.String(10))
     juv = db.Column(db.String(10))
     senior = db.Column(db.String(10))
+
+
+class Torneios(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    date = db.Column(db.String(100))
+    type = db.Column(db.String(100))
+    cat = db.Column(db.String(100))
 
 
 db.create_all()
@@ -101,8 +110,68 @@ def login():
 @app.route('/clube')
 @login_required
 def clube():
-    print(current_user.name)
+
     return render_template("clube.html", name=current_user.name, logged_in=True)
+
+
+@app.route('/criartorneio', methods=["GET", "POST"])
+@login_required
+def criartorneio():
+    if request.method == "POST":
+        new_torneio = Torneios(
+            name=request.form.get('name'),
+            date=request.form.get('date'),
+            type=request.form.get('type'),
+            cat=request.form.get('cat'),
+
+        )
+        torneio = Torneios.query.filter_by(
+            name=new_torneio.name, date=new_torneio.date).first()
+        if not torneio:
+            print(torneio)
+            db.session.add(new_torneio)
+            db.session.commit()
+
+        else:
+            print("Torneio já existe")
+        rows = Torneios.query.all()
+
+        return render_template('novo_torneio.html',
+                               title='Tourneio',
+                               rows=rows, name=current_user.name, logged_in=True)
+    rows = Torneios.query.all()
+    return render_template('novo_torneio.html',
+                           title='Tourneio',
+                           rows=rows, name=current_user.name, logged_in=True)
+
+
+@app.route('/torneio', methods=["GET", "POST"])
+@login_required
+def torneio():
+    return render_template('torneio.html',
+                           title='Tourneio',
+                           name=current_user.name, logged_in=True)
+
+    # Adicionar multiplos jogadores a um torneio
+
+    # if request.method == "POST":
+    #     t = Torneio.query.all()
+
+    #     list = request.form.getlist("name")
+    #     for item in list:
+    #         inscrito = Torneio(name=item)
+    #         player = Torneio.query.filter_by(name=inscrito.name).first()
+    #         if not player:
+    #             print(player)
+    #             db.session.add(inscrito)
+    #         else:
+    #             print("Já inscrito")
+
+    #     db.session.commit()
+
+    # jogadores = Player.query.all()
+    # torneio = Torneio.query.all()
+    # return render_template("torneio.html", jogadores=jogadores, torneio=torneio, name=current_user.name, logged_in=True)
 
 
 @app.route('/jogadores', methods=["GET", "POST"])
@@ -128,10 +197,10 @@ def jogadores():
             print("id já existe")
             player.name = request.form.get('name')
             player.email = request.form.get('email')
-            player.name = request.form.get('name')
-            player.name = request.form.get('name')
-            player.name = request.form.get('name')
-
+            player.hcp_index = request.form.get('hcp_index')
+            player.cat = request.form.get('cat')
+            player.juv = request.form.get('juv')
+            player.senior = request.form.get('senior')
             db.session.commit()
         rows = Player.query.all()
 
@@ -149,6 +218,13 @@ def jogadores():
 def logout():
     logout_user()
     return redirect(url_for('home'))
+
+
+@app.route('/config')
+@login_required
+def config():
+
+    return render_template('config.html')
 
 
 if __name__ == "__main__":
