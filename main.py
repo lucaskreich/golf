@@ -10,6 +10,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'randomkeybestkey'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     "DATABASE_URL", "sqlite:///database.db")
+#
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 login_manager = LoginManager()
@@ -49,13 +50,6 @@ class Torneios(db.Model):
     date = db.Column(db.String(100))
     type = db.Column(db.String(100))
     cat = db.Column(db.String(100))
-
-
-def create_torneio_db(torneio_id):
-    class apuracao_torneio(db.Model):
-        __tablename__ = torneio_id
-        id = db.Column(db.Integer, primary_key=True)
-        player = db.Column(db.String(100))
 
 
 db.create_all()
@@ -117,6 +111,8 @@ def login():
 @app.route('/clube')
 @login_required
 def clube():
+    for t in db.metadata.tables.keys():
+        print(t)
 
     return render_template("clube.html", name=current_user.name, logged_in=True)
 
@@ -139,7 +135,11 @@ def criartorneio():
 
             db.session.add(new_torneio)
             db.session.commit()
-            create_torneio_db(new_torneio.id)
+
+            class Apuracao_torneio(db.Model):
+                __tablename__ = new_torneio.id
+                id = db.Column(db.Integer, primary_key=True)
+                player = db.Column(db.String(100))
             db.create_all()
 
         else:
@@ -158,7 +158,13 @@ def criartorneio():
 @app.route('/torneio/<id>', methods=["GET", "POST"])
 @login_required
 def torneio_atual(id):
-    torneio_atual = 1
+
+    # tables_dict = {
+    #     table.__tablename__: table for table in db.Model.__subclasses__()}
+    # print(tables_dict)
+    for t in db.metadata.tables.keys():
+        print(t)
+
     # Adicionar multiplos jogadores a um torneio
     # if request.method == "POST":
     #     list = request.form.getlist("name")
@@ -174,7 +180,7 @@ def torneio_atual(id):
     #     db.session.commit()
 
     jogadores = Player.query.all()
-    return render_template("torneio_atual.html", j=jogadores, t=torneio_atual, name=current_user.name, logged_in=True)
+    return render_template("torneio_atual.html", j=jogadores, t=1, name=current_user.name, logged_in=True)
 
 
 @app.route('/jogadores', methods=["GET", "POST"])
