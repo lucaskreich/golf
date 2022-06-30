@@ -44,12 +44,52 @@ class Player(db.Model):
 
 
 class Torneios(db.Model):
-
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
+    name = db.Column(db.String(1000))
     date = db.Column(db.String(100))
     type = db.Column(db.String(100))
     cat = db.Column(db.String(100))
+
+
+class Torneio_atual(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    torneio_id = db.Column(db.String(100))
+    pago = db.Column(db.String(100))
+    jogador = db.Column(db.String(100))
+    hcp = db.Column(db.String(100))
+    cat = db.Column(db.String(100))
+    juv = db.Column(db.String(100))
+    senior = db.Column(db.String(100))
+    b_saida = db.Column(db.String(100))
+    b1 = db.Column(db.Integer)
+    b2 = db.Column(db.Integer)
+    b3 = db.Column(db.Integer)
+    b4 = db.Column(db.Integer)
+    b5 = db.Column(db.Integer)
+    b6 = db.Column(db.Integer)
+    b7 = db.Column(db.Integer)
+    b8 = db.Column(db.Integer)
+    b9 = db.Column(db.Integer)
+    b10 = db.Column(db.Integer)
+    b11 = db.Column(db.Integer)
+    b12 = db.Column(db.Integer)
+    b13 = db.Column(db.Integer)
+    b14 = db.Column(db.Integer)
+    b15 = db.Column(db.Integer)
+    b16 = db.Column(db.Integer)
+    b17 = db.Column(db.Integer)
+    b18 = db.Column(db.Integer)
+    v1_gross = db.Column(db.Integer)
+    v2_gross = db.Column(db.Integer)
+    total_gross = db.Column(db.Integer)
+    total_net = db.Column(db.Integer)
+    v2_net = db.Column(db.Integer)
+    ult_6b_net = db.Column(db.Integer)
+    ult_3b_net = db.Column(db.Integer)
+    ult_b_net = db.Column(db.Integer)
+    ganhos = db.Column(db.Integer)
+    pt_rkg = db.Column(db.Integer)
+    obs = db.Column(db.String(100))
 
 
 db.create_all()
@@ -131,19 +171,12 @@ def criartorneio():
         torneio = Torneios.query.filter_by(
             name=new_torneio.name, date=new_torneio.date).first()
         if not torneio:
-            print(torneio)
 
             db.session.add(new_torneio)
-            db.session.commit()
-
-            class Apuracao_torneio(db.Model):
-                __tablename__ = new_torneio.id
-                id = db.Column(db.Integer, primary_key=True)
-                player = db.Column(db.String(100))
-            db.create_all()
 
         else:
             print("Torneio já existe")
+        db.session.commit()
         rows = Torneios.query.all()
 
         return render_template('novo_torneio.html',
@@ -155,36 +188,71 @@ def criartorneio():
                            rows=rows, name=current_user.name, logged_in=True)
 
 
-@app.route('/torneio/<id>', methods=["GET", "POST"])
+@app.route('/torneio/apuracao/<id>', methods=["GET", "POST"])
 @login_required
 def torneio_atual(id):
 
-    # tables_dict = {
-    #     table.__tablename__: table for table in db.Model.__subclasses__()}
-    # print(tables_dict)
-    for t in db.metadata.tables.keys():
-        print(t)
+    if request.method == "POST":
 
-    # Adicionar multiplos jogadores a um torneio
-    # if request.method == "POST":
-    #     list = request.form.getlist("name")
-    #     for item in list:
-    #         inscrito = torneio_atual(name=item)
-    #         player = torneio_atual.query.filter_by(name=inscrito.name).first()
-    #         if not player:
-    #             print(player)
-    #             db.session.add(inscrito)
-    #         else:
-    #             print("Já inscrito")
+        inscrito_list = request.form.getlist('checkbox_jogadores')
 
-    #     db.session.commit()
+        for i in inscrito_list:
+            print(i)
+            inscrito = Torneio_atual.query.filter_by(
+                jogador=i, torneio_id=id).first()
+            player = Torneio_atual(
+                jogador=i,
+                torneio_id=id,
+                pago=request.form.get(i+'_pago'),
+                b_saida=request.form.get(i+'_b_saida'),
+                hcp=request.form.get(i+'_hcp')
 
-    jogadores = Player.query.all()
-    return render_template("torneio_atual.html", j=jogadores, t=1, name=current_user.name, logged_in=True)
+            )
+            if inscrito:
+                inscrito.hcp = request.form.get(i+'_hcp')
+                inscrito.b_saida = request.form.get(i+'_b_saida')
+                inscrito.pago = request.form.get(i+'_pago')
+                db.session.commit()
+                print("já inscrito")
+
+                # Editar Pago
+            else:
+                db.session.add(player)
+                db.session.commit()
+
+    t = Torneios.query.filter_by(id=id).first()
+    torneio = Torneio_atual.query.filter_by(torneio_id=id).all()
+    print(t)
+    p = Player.query.all()
+    # Checar se jogador selecionado está inscrito
+    # Adicionar Jogador cadastrado a 'Torneio Atual'
+    # mostrar jogadores cadastrados, com espaço para adicionar resultado por buraco
+    # checkmark qndo resultado do jogador já tiver sido adicionado( ou mudança de cor)
+    # tela separada, resultado do torneio
+    # verificar para editar handicap (aba do jogador)
+    # botão finalizar torneio (enviar resultado por email? finalizar ranking, calcular valor premiação)
+    # atualizar hcp bluegolf e quarta nobre (botão na aba jogadores?)
+    # aba config, incluir slope, tees de saída, categorias
+    # Ranking
+    #
+    return render_template('torneio_atual.html',
+                           title='Players',
+                           name=current_user.name, t=t, p=p, torneio=torneio, logged_in=True)
 
 
-@app.route('/jogadores', methods=["GET", "POST"])
+@app.route('/torneio/apuracao/<id>/<jogador>', methods=["GET", "POST"])
 @login_required
+def add_res_jog(id, jogador):
+    inscrito = Torneio_atual.query.filter_by(
+        jogador=jogador, torneio_id=id).first()
+    print(inscrito.jogador, inscrito.hcp)
+    return render_template('add_resultado_jog.html',
+                           title='Players', id=id, jogador=jogador, inscrito=inscrito,
+                           name=current_user.name, logged_in=True)
+
+
+@ app.route('/jogadores', methods=["GET", "POST"])
+@ login_required
 def jogadores():
     if request.method == "POST":
         new_player = Player(
@@ -222,15 +290,15 @@ def jogadores():
                            rows=rows, name=current_user.name, logged_in=True)
 
 
-@app.route('/logout')
-@login_required
+@ app.route('/logout')
+@ login_required
 def logout():
     logout_user()
     return redirect(url_for('home'))
 
 
-@app.route('/config')
-@login_required
+@ app.route('/config')
+@ login_required
 def config():
 
     return render_template('config.html')
