@@ -1,8 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="container">
-    <h1>config</h1>
+<div class="box">
+    <h1>Configurações</h1>
+    <form action="{{ url_for('config') }}" method="post">
+        <input type="text" name="tee" placeholder="Tee de Saída" required="required" />
+        <input type="number" name="slope" placeholder="Slope" required="required" />
+
+        <input type="number" step="0.01" name="courserating" placeholder="Course Rating" required="required" />
+        {%for n in range(18)%}
+
+        <label for="b{{loop.index}}">Buraco {{loop.index}}</label>
+        <input type="number" value="par_{{loop.index}}" placeholder="Par" />
+        <input type="number" value="hcp_stroke_{{loop.index}}" placeholder="Hcp Stroke" />
+        <input type="number" value="distancia_{{loop.index}}" placeholder="Distancia em Jardas" />
+
+
+        {% endfor %}
+        <button type="submit" class="btn btn-primary btn-block btn-large">Cadastrar</button>
+    </form>
 
 </div>
 

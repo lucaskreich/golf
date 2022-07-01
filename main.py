@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 import os
+from sqlalchemy.sql import func
 
 
 app = Flask(__name__)
@@ -28,6 +29,129 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     name = db.Column(db.String(1000))
+    permission = db.Column(db.String(100))
+    created_at = db.Column(db.DateTime(timezone=True),
+                           server_default=func.now())
+    # clube_id = db.Column(db.Integer)
+
+
+class Campo(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    tee_saida_1 = db.Column(db.String(100))
+    slope_1 = db.Column(db.Integer)
+    course_rating_1 = db.Column(db.Float)
+    b1_par_1 = db.Column(db.Integer)
+    b2_par_1 = db.Column(db.Integer)
+    b3_par_1 = db.Column(db.Integer)
+    b4_par_1 = db.Column(db.Integer)
+    b5_par_1 = db.Column(db.Integer)
+    b6_par_1 = db.Column(db.Integer)
+    b7_par_1 = db.Column(db.Integer)
+    b8_par_1 = db.Column(db.Integer)
+    b9_par_1 = db.Column(db.Integer)
+    b10_par_1 = db.Column(db.Integer)
+    b11_par_1 = db.Column(db.Integer)
+    b12_par_1 = db.Column(db.Integer)
+    b13_par_1 = db.Column(db.Integer)
+    b14_par_1 = db.Column(db.Integer)
+    b15_par_1 = db.Column(db.Integer)
+    b16_par_1 = db.Column(db.Integer)
+    b17_par_1 = db.Column(db.Integer)
+    b18_par_1 = db.Column(db.Integer)
+    b1_hcp_stroke_1 = db.Column(db.Integer)
+    b2_hcp_stroke_1 = db.Column(db.Integer)
+    b3_hcp_stroke_1 = db.Column(db.Integer)
+    b4_hcp_stroke_1 = db.Column(db.Integer)
+    b5_hcp_stroke_1 = db.Column(db.Integer)
+    b6_hcp_stroke_1 = db.Column(db.Integer)
+    b7_hcp_stroke_1 = db.Column(db.Integer)
+    b8_hcp_stroke_1 = db.Column(db.Integer)
+    b9_hcp_stroke_1 = db.Column(db.Integer)
+    b10_hcp_stroke_1 = db.Column(db.Integer)
+    b11_hcp_stroke_1 = db.Column(db.Integer)
+    b12_hcp_stroke_1 = db.Column(db.Integer)
+    b13_hcp_stroke_1 = db.Column(db.Integer)
+    b14_hcp_stroke_1 = db.Column(db.Integer)
+    b15_hcp_stroke_1 = db.Column(db.Integer)
+    b16_hcp_stroke_1 = db.Column(db.Integer)
+    b17_hcp_stroke_1 = db.Column(db.Integer)
+    b18_hcp_stroke_1 = db.Column(db.Integer)
+    b1_distance_1 = db.Column(db.Integer)
+    b2_distance_1 = db.Column(db.Integer)
+    b3_distance_1 = db.Column(db.Integer)
+    b4_distance_1 = db.Column(db.Integer)
+    b5_distance_1 = db.Column(db.Integer)
+    b6_distance_1 = db.Column(db.Integer)
+    b7_distance_1 = db.Column(db.Integer)
+    b8_distance_1 = db.Column(db.Integer)
+    b9_distance_1 = db.Column(db.Integer)
+    b10_distance_1 = db.Column(db.Integer)
+    b11_distance_1 = db.Column(db.Integer)
+    b12_distance_1 = db.Column(db.Integer)
+    b13_distance_1 = db.Column(db.Integer)
+    b14_distance_1 = db.Column(db.Integer)
+    b15_distance_1 = db.Column(db.Integer)
+    b16_distance_1 = db.Column(db.Integer)
+    b17_distance_1 = db.Column(db.Integer)
+    b18_distance_1 = db.Column(db.Integer)
+    tee_saida_2 = db.Column(db.String(100))
+    slope_2 = db.Column(db.Float(100))
+    corse_rating_2 = db.Column(db.Float(100))
+    b1_par_2 = db.Column(db.Integer)
+    b2_par_2 = db.Column(db.Integer)
+    b3_par_2 = db.Column(db.Integer)
+    b4_par_2 = db.Column(db.Integer)
+    b5_par_2 = db.Column(db.Integer)
+    b6_par_2 = db.Column(db.Integer)
+    b7_par_2 = db.Column(db.Integer)
+    b8_par_2 = db.Column(db.Integer)
+    b9_par_2 = db.Column(db.Integer)
+    b10_par_2 = db.Column(db.Integer)
+    b11_par_2 = db.Column(db.Integer)
+    b12_par_2 = db.Column(db.Integer)
+    b13_par_2 = db.Column(db.Integer)
+    b14_par_2 = db.Column(db.Integer)
+    b15_par_2 = db.Column(db.Integer)
+    b16_par_2 = db.Column(db.Integer)
+    b17_par_2 = db.Column(db.Integer)
+    b18_par_2 = db.Column(db.Integer)
+    b1_hcp_stroke_2 = db.Column(db.Integer)
+    b2_hcp_stroke_2 = db.Column(db.Integer)
+    b3_hcp_stroke_2 = db.Column(db.Integer)
+    b4_hcp_stroke_2 = db.Column(db.Integer)
+    b5_hcp_stroke_2 = db.Column(db.Integer)
+    b6_hcp_stroke_2 = db.Column(db.Integer)
+    b7_hcp_stroke_2 = db.Column(db.Integer)
+    b8_hcp_stroke_2 = db.Column(db.Integer)
+    b9_hcp_stroke_2 = db.Column(db.Integer)
+    b10_hcp_stroke_2 = db.Column(db.Integer)
+    b11_hcp_stroke_2 = db.Column(db.Integer)
+    b12_hcp_stroke_2 = db.Column(db.Integer)
+    b13_hcp_stroke_2 = db.Column(db.Integer)
+    b14_hcp_stroke_2 = db.Column(db.Integer)
+    b15_hcp_stroke_2 = db.Column(db.Integer)
+    b16_hcp_stroke_2 = db.Column(db.Integer)
+    b17_hcp_stroke_2 = db.Column(db.Integer)
+    b18_hcp_stroke_2 = db.Column(db.Integer)
+    b1_distance_2 = db.Column(db.Integer)
+    b2_distance_2 = db.Column(db.Integer)
+    b3_distance_2 = db.Column(db.Integer)
+    b4_distance_2 = db.Column(db.Integer)
+    b5_distance_2 = db.Column(db.Integer)
+    b6_distance_2 = db.Column(db.Integer)
+    b7_distance_2 = db.Column(db.Integer)
+    b8_distance_2 = db.Column(db.Integer)
+    b9_distance_2 = db.Column(db.Integer)
+    b10_distance_2 = db.Column(db.Integer)
+    b11_distance_2 = db.Column(db.Integer)
+    b12_distance_2 = db.Column(db.Integer)
+    b13_distance_2 = db.Column(db.Integer)
+    b14_distance_2 = db.Column(db.Integer)
+    b15_distance_2 = db.Column(db.Integer)
+    b16_distance_2 = db.Column(db.Integer)
+    b17_distance_2 = db.Column(db.Integer)
+    b18_distance_2 = db.Column(db.Integer)
 
 
 class Player(db.Model):
@@ -177,12 +301,12 @@ def criartorneio():
         else:
             print("Torneio já existe")
         db.session.commit()
-        rows = Torneios.query.all()
+        rows = Torneios.query.order_by(Torneios.date.desc()).all()
 
         return render_template('novo_torneio.html',
                                title='Tourneio',
                                rows=rows, name=current_user.name, logged_in=True)
-    rows = Torneios.query.all()
+    rows = Torneios.query.order_by(Torneios.date.desc()).all()
     return render_template('novo_torneio.html',
                            title='Tourneio',
                            rows=rows, name=current_user.name, logged_in=True)
@@ -198,8 +322,8 @@ def torneio_atual(id):
 
         for i in inscrito_list:
             print(i)
-            inscrito = Torneio_atual.query.filter_by(
-                jogador=i, torneio_id=id).first()
+            inscrito = Torneio_atual.query.filter_by(torneio_id=id,
+                                                     jogador=i).first()
             player = Torneio_atual(
                 jogador=i,
                 torneio_id=id,
@@ -209,9 +333,12 @@ def torneio_atual(id):
 
             )
             if inscrito:
-                inscrito.hcp = request.form.get(i+'_hcp')
-                inscrito.b_saida = request.form.get(i+'_b_saida')
-                inscrito.pago = request.form.get(i+'_pago')
+                if request.form.get(i+'_hcp') != "":
+                    inscrito.hcp = request.form.get(i+'_hcp')
+                if request.form.get(i+'_b_saida') != "":
+                    inscrito.b_saida = request.form.get(i+'_b_saida')
+                if request.form.get(i+'_pago') != "":
+                    inscrito.pago = request.form.get(i+'_pago')
                 db.session.commit()
                 print("já inscrito")
 
@@ -221,20 +348,20 @@ def torneio_atual(id):
                 db.session.commit()
 
     t = Torneios.query.filter_by(id=id).first()
-    torneio = Torneio_atual.query.filter_by(torneio_id=id).all()
+    torneio = Torneio_atual.query.filter_by(
+        torneio_id=id).order_by(Torneio_atual.b_saida.asc(), Torneio_atual.jogador).all()
     print(t)
     p = Player.query.all()
-    # Checar se jogador selecionado está inscrito
-    # Adicionar Jogador cadastrado a 'Torneio Atual'
-    # mostrar jogadores cadastrados, com espaço para adicionar resultado por buraco
+
     # checkmark qndo resultado do jogador já tiver sido adicionado( ou mudança de cor)
     # tela separada, resultado do torneio
-    # verificar para editar handicap (aba do jogador)
     # botão finalizar torneio (enviar resultado por email? finalizar ranking, calcular valor premiação)
     # atualizar hcp bluegolf e quarta nobre (botão na aba jogadores?)
     # aba config, incluir slope, tees de saída, categorias
     # Ranking
-    #
+    # na aba editar jogador, pode desclassificar o jogador e desinscrever
+    # ver erro, clicar no jogar sem buracos cadastrados e clicar em cadastrar sem preencher tudo da erro
+
     return render_template('torneio_atual.html',
                            title='Players',
                            name=current_user.name, t=t, p=p, torneio=torneio, logged_in=True)
@@ -245,7 +372,87 @@ def torneio_atual(id):
 def add_res_jog(id, jogador):
     inscrito = Torneio_atual.query.filter_by(
         jogador=jogador, torneio_id=id).first()
-    print(inscrito.jogador, inscrito.hcp)
+    t = Torneios.query.filter_by(id=id).first()
+    torneio = Torneio_atual.query.filter_by(torneio_id=id).all()
+    p = Player.query.all()
+    if request.method == "POST":
+        if request.form.get('desclassificado') == "desclassificado":
+            # verificar para manter box checado se já tiver sido desclassificado
+
+            print("desc")
+            inscrito.total_gross = inscrito.total_net = inscrito.v1_gross = inscrito.v2_gross = inscrito.v2_net = inscrito.ganhos = inscrito.pt_rkg = "DQ"
+
+            db.session.commit()
+            return render_template('torneio_atual.html',
+                                   title='Players',
+                                   name=current_user.name, t=t, p=p, torneio=torneio, logged_in=True)
+        # Consertar essa merda
+        if request.form.get('hcp') != "":
+            inscrito.hcp = request.form.get('hcp')
+        if request.form.get('b_saida') != "":
+            inscrito.b_saida = request.form.get('b_saida')
+        if request.form.get('pago') != "":
+            inscrito.pago = request.form.get('pago')
+        if request.form.get('b1') != "":
+            inscrito.b1 = request.form.get('b1')
+        if request.form.get('b2') != "":
+            inscrito.b2 = request.form.get('b2')
+        if request.form.get('b3') != "":
+            inscrito.b3 = request.form.get('b3')
+        if request.form.get('b4') != "":
+            inscrito.b4 = request.form.get('b4')
+        if request.form.get('b5') != "":
+            inscrito.b5 = request.form.get('b5')
+        if request.form.get('b6') != "":
+            inscrito.b6 = request.form.get('b6')
+        if request.form.get('b7') != "":
+            inscrito.b7 = request.form.get('b7')
+        if request.form.get('b8') != "":
+            inscrito.b8 = request.form.get('b8')
+        if request.form.get('b9') != "":
+            inscrito.b9 = request.form.get('b9')
+        if request.form.get('b10') != "":
+            inscrito.b10 = request.form.get('b10')
+        if request.form.get('b11') != "":
+            inscrito.b11 = request.form.get('b11')
+        if request.form.get('b12') != "":
+            inscrito.b12 = request.form.get('b12')
+        if request.form.get('b13') != "":
+            inscrito.b13 = request.form.get('b13')
+        if request.form.get('b14') != "":
+            inscrito.b14 = request.form.get('b14')
+        if request.form.get('b15') != "":
+            inscrito.b15 = request.form.get('b15')
+        if request.form.get('b16') != "":
+            inscrito.b16 = request.form.get('b16')
+        if request.form.get('b17') != "":
+            inscrito.b17 = request.form.get('b17')
+        if request.form.get('b18') != "":
+            inscrito.b18 = request.form.get('b18')
+        db.session.commit()
+
+        inscrito.v1_gross = inscrito.b1 + inscrito.b2 + inscrito.b3 + inscrito.b4 + \
+            inscrito.b5 + inscrito.b6 + inscrito.b7 + inscrito.b8 + inscrito.b9
+
+        inscrito.v2_gross = inscrito.b10 + inscrito.b11 + inscrito.b12 + inscrito.b13 + \
+            inscrito.b14 + inscrito.b15 + inscrito.b16 + inscrito.b17 + inscrito.b18
+
+        inscrito.total_gross = inscrito.v1_gross + inscrito.v2_gross
+        inscrito.total_net = inscrito.total_gross - int(inscrito.hcp)
+        inscrito.v2_net = inscrito.v2_gross - int(inscrito.hcp)/2
+        inscrito.ult_6b_net = (inscrito.v2_gross - inscrito.b10 -
+                               inscrito.b11 - inscrito.b12) - (int(inscrito.hcp)/3)
+        inscrito.ult_3b_net = (inscrito.b16 + inscrito.b17 +
+                               inscrito.b18) - (int(inscrito.hcp)/6)
+        inscrito.ult_b_net = inscrito.b18 - (int(inscrito.hcp)/18)
+        db.session.commit()
+        return render_template('torneio_atual.html',
+                               title='Players',
+                               name=current_user.name, t=t, p=p, torneio=torneio, logged_in=True)
+
+    db.session.commit()
+
+    print(inscrito.jogador)
     return render_template('add_resultado_jog.html',
                            title='Players', id=id, jogador=jogador, inscrito=inscrito,
                            name=current_user.name, logged_in=True)
@@ -259,7 +466,7 @@ def jogadores():
             email=request.form.get('email'),
             name=request.form.get('name'),
             hcp_id=request.form.get('hcp_id'),
-            hcp_index=request.form.get('hcp_index'),
+            hcp_index=float(request.form.get('hcp_index').replace(',', '.')),
             cat=request.form.get('cat'),
             juv=request.form.get('juv'),
             senior=request.form.get('senior'),
@@ -290,6 +497,18 @@ def jogadores():
                            rows=rows, name=current_user.name, logged_in=True)
 
 
+@ app.route('/torneio/apuracao/<id>/resultado')
+def resultado_apuracao(id):
+
+    t = Torneios.query.filter_by(id=id).first()
+    torneio = Torneio_atual.query.filter_by(
+        torneio_id=id).order_by(Torneio_atual.total_net, Torneio_atual.v2_net, Torneio_atual.ult_6b_net, Torneio_atual.ult_3b_net, Torneio_atual.ult_b_net).all()
+
+    return render_template('resultado_apuracao.html',
+                           title='resultado',
+                           t=t, torneio=torneio)
+
+
 @ app.route('/logout')
 @ login_required
 def logout():
@@ -297,11 +516,30 @@ def logout():
     return redirect(url_for('home'))
 
 
-@ app.route('/config')
+@ app.route('/config', methods=["GET", "POST"])
 @ login_required
 def config():
+    if request.method == "POST":
+        new_campo = Campo(
+            name="Costão",
+            tee_saida_1=request.form.get('tee'),
+            slope_1=request.form.get('slope'),
+            course_rating_1=request.form.get("courserating"))
+        campo = Campo.query.first()
+        if not campo:
 
-    return render_template('config.html')
+            db.session.add(new_campo)
+            db.session.commit()
+
+        else:
+
+            campo.tee_saida_1 = request.form.get('tee'),
+            campo.slope_1 = request.form.get('slope'),
+            campo.course_rating_1 = request.form.get("courserating")
+
+            db.session.commit()
+
+    return render_template('config.html', name=current_user.name, logged_in=True)
 
 
 if __name__ == "__main__":
