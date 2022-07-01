@@ -11,14 +11,14 @@
         <form action="{{ url_for('torneio_atual', id=t.id) }}" method="post">
             {% for player in p %}
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value={{player.name}} name="checkbox_jogadores"
+                <input class="form-check-input" type="checkbox" value={{player.hcp_id}} name="checkbox_jogadores"
                     id="checkbox_jogadores">
                 <label class="form-check-label" for="checkbox_jogadores">
                     {{player.name}} - {{player.hcp_qn}}
                 </label>
-                <input type="text" name="{{player.name}}_pago" placeholder="Inscrição Paga?" />
-                <input type="text" name="{{player.name}}_hcp" placeholder="Alterar Hcp?" />
-                <input type="text" name="{{player.name}}_b_saida" placeholder="Buraco de Saida" />
+                <input type="text" name="{{player.hcp_id}}_pago" placeholder="Inscrição Paga?" />
+                <input type="text" name="{{player.hcp_id}}_hcp" placeholder="Alterar Hcp?" />
+                <input type="text" name="{{player.hcp_id}}_b_saida" placeholder="Buraco de Saida" />
             </div>
             {% endfor %}
             <button type="submit" class="btn btn-primary btn-block btn-large">Cadastrar</button>
@@ -65,6 +65,9 @@
 
                         <th scope="row">{{row.total_net}}</th>
                         <th scope="row">{{row.v2_net}}</th>
+                        <th scope="row"><a
+                                href="/torneio/apuracao/{{row.torneio_id}}/{{row.jogador_id}}/delete">Desinscrever</a>
+                        </th>
 
                         {% endfor %}
                 </tbody>

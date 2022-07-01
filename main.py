@@ -67,13 +67,16 @@ class Torneios(db.Model):
 class Torneio_atual(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     torneio_id = db.Column(db.String(100))
-    pago = db.Column(db.String(100))
+    jogador_id = db.Column(db.String(100))
+
     jogador = db.Column(db.String(100))
     hcp = db.Column(db.String(100))
+
     cat = db.Column(db.String(100))
     juv = db.Column(db.String(100))
     senior = db.Column(db.String(100))
     b_saida = db.Column(db.String(100))
+    pago = db.Column(db.String(100))
     b1 = db.Column(db.Integer)
     b2 = db.Column(db.Integer)
     b3 = db.Column(db.Integer)
@@ -208,13 +211,17 @@ def torneio_atual(id):
     if request.method == "POST":
 
         inscrito_list = request.form.getlist('checkbox_jogadores')
-
+        # pega lista de ids selecionadas no checkbox
         for i in inscrito_list:
             print(i)
             inscrito = Torneio_atual.query.filter_by(torneio_id=id,
-                                                     jogador=i).first()
+                                                     jogador_id=i).first()
+            # transforma id no nome do jogador
+            jogador_name = Player.query.filter_by(hcp_id=i).first()
+            print(jogador_name.name)
             player = Torneio_atual(
-                jogador=i,
+                jogador_id=i,
+                jogador=jogador_name.name,
                 torneio_id=id,
                 pago=request.form.get(i+'_pago'),
                 b_saida=request.form.get(i+'_b_saida'),
@@ -222,6 +229,8 @@ def torneio_atual(id):
 
             )
             if inscrito:
+
+                print(i)
                 if request.form.get(i+'_hcp') != "":
                     inscrito.hcp = request.form.get(i+'_hcp')
                 if request.form.get(i+'_b_saida') != "":
@@ -396,6 +405,18 @@ def resultado_apuracao(id):
     return render_template('resultado_apuracao.html',
                            title='resultado',
                            t=t, torneio=torneio)
+
+
+@app.route("/torneio/apuracao/<id>/<jogador_id>/delete")
+@ login_required
+def desinscrever(id, jogador_id):
+
+    jogador = Torneio_atual.query.filter_by(
+        torneio_id=id, jogador_id=jogador_id).first()
+    db.session.delete(jogador)
+    db.session.commit()
+
+    return torneio_atual(id)
 
 
 @ app.route('/logout')
