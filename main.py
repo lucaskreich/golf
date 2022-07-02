@@ -49,7 +49,7 @@ class Player(db.Model):
     clube_id = db.Column(db.Integer)
     name = db.Column(db.String(1000))
     email = db.Column(db.String(100))
-    hcp_id = db.Column(db.Integer, unique=True)
+    hcp_id = db.Column(db.String(100))
     hcp_index = db.Column(db.Float)
     # Hcp Quarta Nobre, modificado qndo joga abaixo do par
     hcp_qn = db.Column(db.Integer)
