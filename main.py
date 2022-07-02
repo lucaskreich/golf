@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'randomkeybestkey'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
-    "DATABASE_URL", "sqlite:///database.db")
+    "DATABASE_URL", "sqlite:///database.db").replace("s://", "sql://", 1)
 #
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
