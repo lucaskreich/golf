@@ -6,8 +6,8 @@
     <form action="{{ url_for('jogadores') }}" method="post">
         <input type="text" name="name" placeholder="Nome" required="required" />
         <!-- <input type="email" name="email" placeholder="Email" /> -->
-        <input type="number" name="hcp_id" placeholder="HCP ID" required="required" />
-        <input type="float" name="hcp_index" placeholder="HCP Index" required="required" />
+        <input type="text" name="hcp_id" placeholder="ID do Jogador no BlueGolf" required="required" />
+        <input type="float" name="hcp_index" placeholder="HCP Index" />
         <label for="cat">Categoria:</label>
         <select id="cat" name="cat" placeholder="Categoria">
             <option value="M1">M1</option>

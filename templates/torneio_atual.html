@@ -6,6 +6,16 @@
     <div>
         <h2><a href="{{ url_for('resultado_apuracao', id=t.id) }}"> Resultado</a> </h2>
     </div>
+    {%if t.encerrado !="sim"%}
+    <div>
+        <h2><a href="{{ url_for('add_to_ranking', id=t.id) }}"> Encerrar Torneio</a> </h2>
+    </div>
+    {% endif %}
+    {%if t.encerrado =="sim"%}
+    <div>
+        <h2> Torneio Encerrado! </h2>
+    </div>
+    {% endif %}
     <div><label for="player">Inscrever Jogador</label>
         <div>{{t.name}} - {{t.date}}</div>
         <form action="{{ url_for('torneio_atual', id=t.id) }}" method="post">
@@ -49,10 +59,10 @@
                 <tbody>
                     {% for row in torneio %}
                     <tr>
-                        <th scope="row"><a href="/torneio/apuracao/{{row.torneio_id}}/{{row.jogador}}"><img
+                        <th scope="row"><a href="/torneio/apuracao/{{row.torneio_id}}/{{row.jogador_id}}"><img
                                     src="/static/img/edit.png"></a></th>
                         <th scope="row"><a
-                                href="/torneio/apuracao/{{row.torneio_id}}/{{row.jogador}}">{{row.jogador}}</a>
+                                href="/torneio/apuracao/{{row.torneio_id}}/{{row.jogador_id}}">{{row.jogador}}</a>
                         </th>
                         <th scope="row">{{row.hcp}}</th>
                         <th scope="row">{{row.pago}}</th>

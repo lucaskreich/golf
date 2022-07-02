@@ -3,7 +3,7 @@
 
 <div>
     <h1>Editar Jogador {{inscrito.jogador}}</h1>
-    <form class="form-inline" action="{{ url_for('add_res_jog', id=id, jogador=jogador) }}" method="post">
+    <form class="form-inline" action="{{ url_for('add_res_jog', id=id, jogador_id=jogador_id) }}" method="post">
 
         <input class="form-control mb-2 mr-sm-2" type="number" name="hcp"
             placeholder="Handicap Atual = {{inscrito.hcp}}" />
