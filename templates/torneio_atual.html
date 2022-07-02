@@ -24,7 +24,7 @@
                 <input class="form-check-input" type="checkbox" value={{player.hcp_id}} name="checkbox_jogadores"
                     id="checkbox_jogadores">
                 <label class="form-check-label" for="checkbox_jogadores">
-                    {{player.name}} - {{player.hcp_qn}}
+                    {{player.name}} - {{player.hcp_index}}
                 </label>
                 <input type="text" name="{{player.hcp_id}}_pago" placeholder="Inscrição Paga?" />
                 <input type="text" name="{{player.hcp_id}}_hcp" placeholder="Alterar Hcp?" />
@@ -64,17 +64,24 @@
                         <th scope="row"><a
                                 href="/torneio/apuracao/{{row.torneio_id}}/{{row.jogador_id}}">{{row.jogador}}</a>
                         </th>
+
                         <th scope="row">{{row.hcp}}</th>
                         <th scope="row">{{row.pago}}</th>
                         <th scope="row">{{row.b_saida}}</th>
+                        {% if row.total_gross != 999 %}
                         <th scope="row">{{row.v1_gross}}</th>
                         <th scope="row">{{row.v2_gross}}</th>
-
-
                         <th scope="row">{{row.total_gross}}</th>
-
                         <th scope="row">{{row.total_net}}</th>
                         <th scope="row">{{row.v2_net}}</th>
+                        {% endif %}
+                        {% if row.total_gross == 999 %}
+                        <th scope="row">DQ</th>
+                        <th scope="row">DQ</th>
+                        <th scope="row">DQ</th>
+                        <th scope="row">DQ</th>
+                        <th scope="row">DQ</th>
+                        {% endif %}
                         <th scope="row"><a
                                 href="/torneio/apuracao/{{row.torneio_id}}/{{row.jogador_id}}/delete">Desinscrever</a>
                         </th>

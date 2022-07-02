@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, url_for, redirect, flash, send_from_directory
+from sqlalchemy import and_
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 import os
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, select, and_
 from hcp_index import calc_hcp_qn, get_index
 
 app = Flask(__name__)
@@ -119,6 +120,7 @@ class Torneio_atual(db.Model):
 class Ranking(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     clube_id = db.Column(db.Integer)
+    name = db.Column(db.String(100))
     player_id = db.Column(db.String(100))
     ranking_id = db.Column(db.String(100))
     pontos = db.Column(db.Integer)
@@ -184,8 +186,6 @@ def login():
 @app.route('/clube')
 @login_required
 def clube():
-    for t in db.metadata.tables.keys():
-        print(t)
 
     return render_template("clube.html", name=current_user.name, logged_in=True)
 
@@ -207,8 +207,6 @@ def criartorneio():
 
             db.session.add(new_torneio)
 
-        else:
-            print("Torneio já existe")
         db.session.commit()
         rows = Torneios.query.order_by(Torneios.date.desc()).all()
 
@@ -224,7 +222,10 @@ def criartorneio():
 @app.route('/torneio/apuracao/<id>', methods=["GET", "POST"])
 @login_required
 def torneio_atual(id):
+    t = Torneios.query.filter_by(id=id).first()
 
+    if t.encerrado == "sim":
+        return resultado_apuracao(id)
     if request.method == "POST":
 
         inscrito_list = request.form.getlist('checkbox_jogadores')
@@ -239,7 +240,7 @@ def torneio_atual(id):
                 hcp = calc_hcp_qn(jogador_name.hcp_index)
             else:
                 hcp = jogador_name.hcp_qn
-            print(jogador_name.name)
+
             player = Torneio_atual(
                 jogador_id=i,
                 jogador=jogador_name.name,
@@ -251,7 +252,6 @@ def torneio_atual(id):
             )
             if inscrito:
 
-                print(i)
                 if request.form.get(i+'_hcp') != "":
                     inscrito.hcp = request.form.get(i+'_hcp')
                 if request.form.get(i+'_b_saida') != "":
@@ -259,7 +259,6 @@ def torneio_atual(id):
                 if request.form.get(i+'_pago') != "":
                     inscrito.pago = request.form.get(i+'_pago')
                 db.session.commit()
-                print("já inscrito")
 
                 # Editar Pago
             else:
@@ -269,8 +268,9 @@ def torneio_atual(id):
     t = Torneios.query.filter_by(id=id).first()
     torneio = Torneio_atual.query.filter_by(
         torneio_id=id).order_by(Torneio_atual.b_saida.asc(), Torneio_atual.jogador).all()
-    print(t)
-    p = Player.query.all()
+
+    p = Player.query.filter()
+
     # checkmark qndo resultado do jogador já tiver sido adicionado( ou mudança de cor)
     # tela separada, resultado do torneio
     # botão finalizar torneio (enviar resultado por email? finalizar ranking, calcular valor premiação)
@@ -297,8 +297,7 @@ def add_res_jog(id, jogador_id):
         if request.form.get('desclassificado') == "desclassificado":
             # verificar para manter box checado se já tiver sido desclassificado
 
-            print("desc")
-            inscrito.total_gross = inscrito.total_net = inscrito.v1_gross = inscrito.v2_gross = inscrito.v2_net = inscrito.ganhos = "DQ"
+            inscrito.total_gross = inscrito.total_net = inscrito.v1_gross = inscrito.v2_gross = inscrito.v2_net = 999
 
             db.session.commit()
             return render_template('torneio_atual.html',
@@ -382,7 +381,7 @@ def jogadores():
         if request.form.get('hcp_index') == "":
             # update from bluegolf
             index = get_index(request.form.get('hcp_id'))
-            print(index)
+
         else:
             index = request.form.get('hcp_index')
         new_player = Player(
@@ -397,13 +396,12 @@ def jogadores():
         )
         player = Player.query.filter_by(hcp_id=new_player.hcp_id).first()
         if not player:
-            print(player)
 
             db.session.add(new_player)
             db.session.commit()
 
         else:
-            print("id já existe")
+
             player.name = request.form.get('name')
             player.email = request.form.get('email')
             player.hcp_index = request.form.get('hcp_index')
@@ -416,6 +414,7 @@ def jogadores():
 
             clube_id=1,
             player_id=request.form.get('hcp_id'),
+            name=request.form.get('name'),
             ranking_id=1,
             pontos=0
 
@@ -457,14 +456,38 @@ def add_to_ranking(id):
         return torneio_atual(id)
     torneio = Torneio_atual.query.filter_by(torneio_id=id).order_by(
         Torneio_atual.total_net, Torneio_atual.v2_net, Torneio_atual.ult_6b_net, Torneio_atual.ult_3b_net, Torneio_atual.ult_b_net).all()
+    for i in torneio:
+        if not i.total_gross:
+            return torneio_atual(id)
     pontos_list = [25, 20, 15, 12, 10, 8, 6, 4, 2, 1]
     a = 0
+    # regras valor =
+    # até 4 jog = primeiro - 100%
+    # 5 a 10 jog = primeiro 70, segundo 30
+    # acima 10 = 60, 30,10
+
+    # Contar qntos Jo
+    qnt_jog = Torneio_atual.query.filter_by(torneio_id=id).count()
+    print(qnt_jog)
+    insc = 40
+    insc_liq = 35
+    if qnt_jog < 5:
+        valor_list = [1]
+    elif qnt_jog >= 5 and qnt_jog <= 10:
+        valor_list = [.7, .3]
+    else:
+        valor_list = [.6, .3, .1]
 
     for i in torneio:
         p = Player.query.filter_by(hcp_id=i.jogador_id).first()
-        print(p.rest_hcp_qn)
+
         if a <= 9:
-            if i.total_gross == "DQ":
+            if a <= len(valor_list)-1:
+                i.ganhos = insc_liq*qnt_jog * valor_list[a]
+            else:
+                i.ganhos = 0
+            if i.total_gross == 999:
+                i.ganhos = 0
                 i.pt_rkg = 0
                 a += 1
                 if p.rest_hcp_qn != 0:
@@ -472,7 +495,6 @@ def add_to_ranking(id):
                 continue
             net = int(i.total_net)
             if int(net) < 72:
-
                 p.rest_hcp_qn = 4
                 p.hcp_qn = int(i.total_gross) - 72
                 i.pt_rkg = pontos_list[a] + (72-net)*.5
@@ -484,6 +506,7 @@ def add_to_ranking(id):
                 i.pt_rkg = 0
                 if p.rest_hcp_qn != 0:
                     p.rest_hcp_qn -= 1
+
             a += 1
             r = Ranking.query.filter_by(player_id=i.jogador_id).first()
             r.pontos += i.pt_rkg
@@ -514,6 +537,18 @@ def desinscrever(id, jogador_id):
     db.session.commit()
 
     return torneio_atual(id)
+
+
+@ app.route("/jogadores/<jogador_id>/delete")
+@ login_required
+def del_jogador(jogador_id):
+
+    jogador = Player.query.filter_by(
+        hcp_id=jogador_id).first()
+    db.session.delete(jogador)
+    db.session.commit()
+
+    return jogadores()
 
 
 @ app.route('/logout')
