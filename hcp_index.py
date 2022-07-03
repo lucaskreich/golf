@@ -1,6 +1,4 @@
-# from bs4 import BeautifulSoup
 
-from tokenize import Number
 import requests
 from lxml import html
 
