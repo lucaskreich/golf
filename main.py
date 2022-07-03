@@ -1,12 +1,11 @@
-from calendar import month
-from tokenize import Number
+
 from flask import Flask, render_template, request, url_for, redirect, flash
-from sqlalchemy import and_
+
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 import os
-from sqlalchemy.sql import func, select, and_
+from sqlalchemy.sql import func
 from hcp_index import calc_hcp_qn, get_index
 
 app = Flask(__name__)
