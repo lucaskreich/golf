@@ -1,14 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div>
-    <h1>Editar Jogador {{inscrito.jogador}}</h1>
-    <form class="form-inline" action="{{ url_for('add_res_jog', id=id, jogador_id=jogador_id) }}" method="post">
 
+<h1 style="padding-top: 100px">Editar Jogador - {{inscrito.jogador}}</h1>
+<form class="form-inline" action="{{ url_for('add_res_jog', id=id, jogador_id=jogador_id) }}" class="form-control"
+    method="post">
+    <div class=" mb-3" style="width: 300px"><label for="hcp">Alterar Handicap:</label>
         <input class="form-control mb-2 mr-sm-2" type="number" name="hcp"
             placeholder="Handicap Atual = {{inscrito.hcp}}" />
-        <input class="input-group mb-2 mr-sm-2" type="text" name="b_saida" placeholder="Buraco/Horário de Saída" />
-        <input class="form-check mb-2 mr-sm-2" type="text" name="pago" placeholder="Pago?" />
+    </div>
+    <div class=" mb-3" style="width: 300px"><label for="b_saida">Alterar Buraco de Saída:</label>
+        <input class="form-control mb-2 mr-sm-1" type="text" name="b_saida" placeholder="Buraco/Horário de Saída" />
+    </div>
+    <div class=" mb-3" style="width: 300px"><label class="text" for="pago">Insira informações de pagamento:
+        </label>
+
+        <input class="form-control mb-2 mr-sm-2" type="text" name="pago" placeholder="Pago?" />
+    </div>
+
+    <p>Primeira Volta</p>
+    <div>
         <input style="width: 40px" type="text" name="b1" placeholder="B1" />
         <input style="width: 40px" type="text" name="b2" placeholder="B2" />
         <input style="width: 40px" type="text" name="b3" placeholder="B3" />
@@ -19,6 +30,9 @@
         <input style="width: 40px" type="text" name="b8" placeholder="B8" />
         <input style="width: 40px" type="text" name="b9" placeholder="B9" />
 
+    </div>
+    <div style="padding-top:30px">
+        <p>Segunda Volta</p>
         <input style="width: 40px" type="text" name="b10" placeholder="B10" />
         <input style="width: 40px" type="text" name="b11" placeholder="B11" />
         <input style="width: 40px" type="text" name="b12" placeholder="B12" />
@@ -28,13 +42,20 @@
         <input style="width: 40px" type="text" name="b16" placeholder="B16" />
         <input style="width: 40px" type="text" name="b17" placeholder="B17" />
         <input style="width: 40px" type="text" name="b18" placeholder="B18" />
+    </div>
+    <div style="padding-top:30px;padding-bottom:30px">
         <input class="form-check-input" type="checkbox" value="desclassificado" name="desclassificado"
             id="desclassificado">
         <label class="form-check-label" for="desclassificado">
-            <div>desclassificado</div>
-            <button type="submit" href="/torneio/apuracao/{{inscrito.torneio_id}}"
-                class="btn btn-primary btn-block btn-large">Cadastrar</button>
-    </form>
-</div>
+
+
+            Desclassificado
+    </div>
+
+
+    <button type="submit" href="/torneio/apuracao/{{inscrito.torneio_id}}"
+        class="btn btn-primary btn-block btn-large">Cadastrar</button>
+</form>
+
 
 {% endblock %}

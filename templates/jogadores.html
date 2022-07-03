@@ -1,67 +1,64 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="container-fluid" style="padding-top:30px">
-    <div style="padding-bottom:20px">
-        <h1>Cadastrar Novo Jogador</h1>
-    </div>
-    <form action="{{ url_for('jogadores') }}" method="post" class="row sm-3">
-        <div class="col-md-3">
-            <label for="name" class="form-label">Nome</label>
-            <input type="text" name="name" class="form-control" placeholder="Nome Completo">
-        </div>
-
-        <div class="col-md-2">
-            <label for="hcp_id" class="form-label">Usuário BlueGolf</label>
-            <input type="text" name="hcp_id" class="form-control" placeholder="">
-        </div>
-        <div class="col-12" style="padding-top: 10px;border:1px">
-            <button type="submit" style="width: 200px" class="btn btn-primary">Criar</button>
-        </div>
-    </form>
-
+<div style="padding-bottom:20px">
+    <h1>Cadastrar Novo Jogador</h1>
 </div>
-
-
-<div class="jog_cad">
-    <h1 style="padding-top:50px">Jogadores Cadastrados</h1>
-    <div class="table-responsive-sm">
-        <table class="table table-dark table-bordered ">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Cod BlueGolf</th>
-                    <th scope="col">Nome</th>
-                    <th scope="col">Hcp Index</th>
-                    <th scope="col">Hcp QN </th>
-                    <th scope="col">Excluir</th>
-
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in rows %}
-                <tr>
-                    <th scope="row">{{row.hcp_id}}</th>
-                    <th scope="row">{{row.name}}</th>
-                    <th scope="row">{{row.hcp_index}}</th>
-                    <th scope="row">{{row.hcp_qn}}</th>
-
-                    <th scope="row"><a href="/jogadores/{{row.hcp_id}}//delete"
-                            onClick="confirm('Isso irá excluir o Jogador do Clube, tem certeza?')"><svg
-                                xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-trash" viewBox="0 0 16 16">
-                                <path
-                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                                <path fill-rule="evenodd"
-                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-                            </svg>
-                        </a>
-                    </th>
-                </tr>
-                {% endfor %}
-            </tbody>
-
-        </table>
+<form action="{{ url_for('jogadores') }}" method="post" class="row sm-3">
+    <div class="col-md-3">
+        <label for="name" class="form-label">Nome</label>
+        <input type="text" name="name" class="form-control" placeholder="Nome Completo">
     </div>
 
+    <div class="col-md-2">
+        <label for="hcp_id" class="form-label">Usuário BlueGolf</label>
+        <input type="text" name="hcp_id" class="form-control" placeholder="">
+    </div>
+    <div class="col-12" style="padding-top: 10px;border:1px">
+        <button type="submit" style="width: 200px" class="btn btn-primary">Criar</button>
+    </div>
+</form>
+
+
+
+
+<h1 style="padding-top:50px">Jogadores Cadastrados</h1>
+<div class="table-responsive-sm">
+    <table class="table table-dark table-bordered ">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Cod BlueGolf</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Hcp Index</th>
+                <th scope="col">Hcp QN </th>
+                <th scope="col">Excluir</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <th scope="row">{{row.hcp_id}}</th>
+                <th scope="row">{{row.name}}</th>
+                <th scope="row">{{row.hcp_index}}</th>
+                <th scope="row">{{row.hcp_qn}}</th>
+
+                <th scope="row"><a href="/jogadores/{{row.hcp_id}}//delete"
+                        onClick="confirm('Isso irá excluir o Jogador do Clube, tem certeza?')"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-trash" viewBox="0 0 16 16">
+                            <path
+                                d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                            <path fill-rule="evenodd"
+                                d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                        </svg>
+                    </a>
+                </th>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
 </div>
+
 {% endblock %}

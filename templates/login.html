@@ -2,35 +2,27 @@
 {% block content %}
 
 
-<body class="text-center">
 
-    <main class="form-signin">
-        <form action="{{ url_for('login') }}" method="post">
+<main class="form-signin d-flex aligns-item-center justify-content-center" style="padding-top:50px">
+    <form action="{{ url_for('login') }}" method="post">
 
-            <h1 class="h3 mb-3 fw-normal">Acesso Interno</h1>
-            <div class="form-floating">
-                <input type="email" class="form-control" name="email" id="floatingInput" placeholder="name@example.com">
-                <label for="floatingInput">Email</label>
-            </div>
-            <div class="form-floating">
-                <input type="password" class="form-control" name="password" id="floatingPassword"
-                    placeholder="Password">
-                <label for="floatingPassword">Senha</label>
-            </div>
+        <h1 class="h3 mb-3 fw-normal">Acesso Interno </h1>
+        <div class="form-floating">
+            <input type="email" class="form-control" name="email" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Email</label>
+        </div>
+        <div class="form-floating" style="padding-bottom: 10px;">
+            <input type="password" class="form-control" name="password" id="floatingPassword" placeholder="Password">
+            <label for="floatingPassword">Senha</label>
+        </div>
 
-            <div class="checkbox mb-3">
-                <!-- <label>
-                    <input type="checkbox" value="remember-me"> Remember me
-                </label> -->
-            </div>
-            <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
 
-        </form>
-    </main>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+
+    </form>
+</main>
 
 
 
 
-
-</body>
 {% endblock %}

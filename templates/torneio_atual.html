@@ -20,31 +20,33 @@
     <h2> Torneio Encerrado! </h2>
 </div>
 {% endif %}
-<h2> {{t.type + " - "+ t.name + " - "+t.date}} </h2>
-<h4>Selecione para inscrever:</h4>
-<form action="{{ url_for('torneio_atual', id=t.id) }}" method="post" class="row gy-2 gx-3 align-items-center">
-    {% for player in p %}
-    <div style="width:auto">
-        <div class="row-auto">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value={{player.hcp_id}} name="checkbox_jogadores"
-                    id="checkbox_jogadores">
-                <label class="form-check-label text-danger
+<div style="padding-top:50px">
+    <h2> {{t.type + " - "+ t.name + " - "+t.date_br}} </h2>
+    <h4>Selecione para inscrever:</h4>
+    <form action="{{ url_for('torneio_atual', id=t.id) }}" method="post" class="row gy-2 gx-3 align-items-center">
+        {% for player in p %}
+        <div style="width:auto">
+            <div class="row-auto">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value={{player.hcp_id}} name="checkbox_jogadores"
+                        id="checkbox_jogadores">
+                    <label class="form-check-label text-danger
                     " for="checkbox_jogadores">
-                    {{player.name}} - {{player.hcp_index}}
-                </label>
+                        {{player.name}} - {{player.hcp_index}}
+                    </label>
+                </div>
+
+
             </div>
-
-
         </div>
-    </div>
 
 
-    {% endfor %}
+        {% endfor %}
 
 
-    <button type="submit" class="btn btn-primary btn-block btn-large">Cadastrar</button>
-</form>
+        <button type="submit" class="btn btn-primary btn-block btn-large">Cadastrar</button>
+    </form>
+</div>
 <div class="jog_cad">
     <h1 style="padding-top:50px">Inscritos</h1>
 

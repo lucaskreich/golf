@@ -1,5 +1,6 @@
 
 from flask import Flask, render_template, request, url_for, redirect, flash
+from tomlkit import date
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
@@ -7,6 +8,7 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, cur
 import os
 from sqlalchemy.sql import func
 from hcp_index import calc_hcp_qn, get_index
+
 
 app = Flask(__name__)
 
@@ -68,6 +70,7 @@ class Torneios(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(1000))
     date = db.Column(db.String(100))
+    date_br = db.Column(db.String(100))
     type = db.Column(db.String(100))
     cat = db.Column(db.String(100))
     tees_saida = db.Column(db.String(100))
@@ -131,9 +134,17 @@ class Ranking(db.Model):
 db.create_all()
 
 
+@app.route('/costao')
+@login_required
+def clube():
+    return render_template("index.html", name=current_user.name, logged_in=True)
+
+
 @app.route('/')
-def home():
-    return render_template("index.html", logged_in=current_user.is_authenticated)
+def home2():
+    t = Torneios.query.filter_by(encerrado="sim").order_by(
+        Torneios.date.desc()).first()
+    return render_template("index2.html", t=t)
 
 
 @app.route('/register', methods=["GET", "POST"])
@@ -179,16 +190,9 @@ def login():
             return redirect(url_for('login'))
         else:
             login_user(user)
-            return redirect(url_for('clube'))
+            return redirect(url_for('criartorneio'))
 
     return render_template("login.html", logged_in=current_user.is_authenticated)
-
-
-@app.route('/')
-@login_required
-def clube():
-
-    return render_template("index.html", name=current_user.name, logged_in=True)
 
 
 @app.route('/criartorneio', methods=["GET", "POST"])
@@ -213,7 +217,8 @@ def criartorneio():
         print(br_date)
         new_torneio = Torneios(
             name=request.form.get('name'),
-            date=br_date,
+            date_br=br_date,
+            date=request.form.get('date'),
             type=request.form.get('type'),
             cat=request.form.get('cat'),
             encerrado="nao"
@@ -469,6 +474,16 @@ def resultado_apuracao(id):
                            title='resultado',
                            t=t, torneio=torneio)
 
+#######################################################################################################################################################
+
+#######################################################################################################################################################
+
+#######################################################################################################################################################
+
+#######################################################################################################################################################
+
+#######################################################################################################################################################
+
 
 @ app.route('/torneio/apuracao/<id>/ranking')
 def add_to_ranking(id):
@@ -578,7 +593,7 @@ def del_jogador(jogador_id):
 @ login_required
 def logout():
     logout_user()
-    return redirect(url_for('home'))
+    return home2()
 
 
 @ app.route('/config', methods=["GET", "POST"])
