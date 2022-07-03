@@ -1,14 +1,36 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="box">
-    <h1>Login</h1>
 
-    <form action="{{ url_for('login') }}" method="post">
-        <input type="text" name="email" placeholder="Email" required="required" />
-        <input type="password" name="password" placeholder="Senha" required="required" />
-        <button type="submit" class="btn btn-primary btn-block btn-large">Entrar</button>
-    </form>
-</div>
+<body class="text-center">
 
+    <main class="form-signin">
+        <form action="{{ url_for('login') }}" method="post">
+
+            <h1 class="h3 mb-3 fw-normal">Acesso Interno</h1>
+            <div class="form-floating">
+                <input type="email" class="form-control" name="email" id="floatingInput" placeholder="name@example.com">
+                <label for="floatingInput">Email</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" name="password" id="floatingPassword"
+                    placeholder="Password">
+                <label for="floatingPassword">Senha</label>
+            </div>
+
+            <div class="checkbox mb-3">
+                <!-- <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label> -->
+            </div>
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+
+        </form>
+    </main>
+
+
+
+
+
+</body>
 {% endblock %}

@@ -1,51 +1,63 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="box_left ">
-    <h1>Criar novo Torneio</h1>
-    <form action="{{ url_for('criartorneio') }}" method="post">
-        <input type="text" name="name" placeholder="Nome" required="required" />
-        <!-- <input type="email" name="email" placeholder="Email" /> -->
-        <input type="date" name="date" placeholder="Data" required="required" />
 
-        <select name="type" class="form-select form-select-lg mb-3" aria-label="Default select example">
-            <option value="Quarta Nobre">Quarta Nobre</option>
-            <option value="Etapa Ranking">Etapa Ranking</option>
+<div class="container-fluid" style="padding-top:50px">
+    <h1>Criar Novo Torneio</h1>
+    <form action="{{ url_for('criartorneio') }}" method="post" class="row sm-3">
+        <div class="col-md-6">
+            <label for="name" class="form-label">Nome</label>
+            <input type="text" name="name" class="form-control" placeholder="Ex.: 22ª Etapa">
+        </div>
 
-        </select>
-
-        <button type="submit" class="btn btn-primary btn-block btn-large">Cadastrar</button>
+        <div class="col-md-2">
+            <label for="date" class="form-label">Data</label>
+            <input type="date" name="date" class="form-control">
+        </div>
+        <div class="col-md-4">
+            <label for="type" class="form-label">Tipo</label>
+            <select name="type" class="form-select">
+                <option selected>Quarta Nobre</option>
+                <option disabled>Etapa Ranking</option>
+            </select>
+        </div>
+        <div class="col-12" style="padding-top: 10px;border:1px">
+            <button type="submit" style="width: 200px" class="btn btn-primary">Criar</button>
+        </div>
     </form>
 
-
-
 </div>
-<div class="jog_cad">
-    <h1 style="padding-top:50px">Torneios Criados</h1>
 
-    <table class="table table-dark table-bordered ">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">Data</th>
-                <th scope="col">Nome</th>
-                <th scope="col">Tipo</th>
-                <th scope="col">Modo de Jogo</th>
+<div class="container">
+
+    <h1 style="padding:20px">Torneios </h1>
+    <div class="table-responsive-sm">
+        <table class="table table-hover table-dark">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Data</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Modo de Jogo</th>
 
 
-            </tr>
-        </thead>
-        <tbody>
-            {% for row in rows %}
-            <tr>
-                <th scope="row"><a href="/torneio/apuracao/{{row.id}}">{{row.date}}</a></th>
-                <th scope="row"><a href="/torneio/apuracao/{{row.id}}">{{row.name}}</a></th>
-                <th scope="row"><a href="/torneio/apuracao/{{row.id}}">{{row.type}}</a></th>
-                <th scope="row">Stroke Play</th>
-            </tr>
-            {% endfor %}
-        </tbody>
+                </tr>
+            </thead>
+            <tbody class="text-white ">
+                {% for row in rows %}
+                <div>
+                    <tr onclick="window.location=' /torneio/apuracao/{{row.id}}'" style="cursor: pointer">
+                        <th scope=" row">{{row.date}}</th>
+                        <th scope="row"> {{row.name}} </th>
+                        <th scope="row"> {{row.type}} </th>
+                        <th scope="row">Stroke Play</th>
+                    </tr>
+                </div>
+    </div>
+    {% endfor %}
+    </tbody>
 
     </table>
-
+</div>
 </div>
 {% endblock %}

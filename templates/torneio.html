@@ -2,41 +2,35 @@
 {% block content %}
 
 <div class="container">
-    <h1 class="title" style="padding: 100px">Bem vindo {{name}}!</h1>
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div class="col">
-            <div class="card border-light mb-3" style="max-width: 25rem;">
-                <div class="card-header">Criar Torneio</div>
 
-                <a href="/criartorneio" class="card-body ">
-
-                    <p class="card-text">Crie um novo torneio</p>
-                </a>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card border-light mb-3" style="max-width: 25rem;">
-                <div class="card-header">Torneios anteriores</div>
-
-                <div class="card-body ">
-
-                    <li class="card-text-left"><a href="/torneio"> Ver torneios salvos</a></li>
+    <h1 style="padding:20px">Torneios </h1>
+    <div class="table-responsive-sm">
+        <table class="table table-hover table-dark">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Data</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Modo de Jogo</th>
 
 
+                </tr>
+            </thead>
+            <tbody class="text-white ">
+                {% for row in rows %}
+                <div>
+                    <tr onclick="window.location=' /torneio/apuracao/{{row.id}}/resultado'" style="cursor: pointer">
+                        <th scope=" row">{{row.date}}</th>
+                        <th scope="row"> {{row.name}} </th>
+                        <th scope="row"> {{row.type}} </th>
+                        <th scope="row">Stroke Play</th>
+                    </tr>
                 </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card border-light mb-3" style="max-width: 25rem;">
-                <div class="card-header">Ranking</div>
-
-                <div class="card-body ">
-                    <p class="card-text">Acompanhe o Ranking</p>
-                </div>
-            </div>
-        </div>
-
     </div>
+    {% endfor %}
+    </tbody>
 
+    </table>
+</div>
 </div>
 {% endblock %}

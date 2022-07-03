@@ -1,12 +1,41 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="container-fluid " style="padding:50px">
+  <div class="row" style="padding:50px">
+    {% if logged_in %}
+    <div onclick="location.href='/criartorneio';" style="cursor: pointer;width: 18rem;padding:20px"
+      class="card text-center text-white bg-primary border-dark">
+      {%else%}
+      <div onclick="location.href='/torneios';" style="cursor: pointer;width: 18rem;padding:20px"
+        class="card text-center text-white bg-primary border-dark">
+        {% endif %}
+        <img src=" /static/img/tr1.png  " class=" card-img-top " alt=" ...">
+        <div class="card-body ">
 
-<div class="box">
-  <h1 class="box_h1">Costão Golf Ville</h1>
+          {% if logged_in %}
+          <p class="card-text text-center">Crie um novo torneio ou edite o torneio em andamento</p>
+          {%else%}
+          <p class="card-text text-center">Veja o Resultado de todas as etapas da Quarta Nobre!</p>
+          {% endif %}
+        </div>
+      </div>
+      <div onclick="location.href='/torneio/apuracao/ranking';" class="card text-center text-white bg-info border-dark"
+        style="cursor: pointer;width: 18rem;padding:20px">
+        <img src=" /static/img/rk1.png " class=" card-img-top " alt=" ...">
+        <div class="card-body ">
+          <p class="card-text">Acompanhe o Ranking da Quarta Nobre.<br>
+            Os primeiros 16 colocados participam do Match Play!</p>
+        </div>
+      </div>
+      {% if logged_in %}
+      <div onclick="location.href='/jogadores';" style="cursor: pointer;width: 18rem;padding:20px"
+        class="card text-center text-white bg-primary border-dark">
+        <img src=" /static/img/pl.png " class=" card-img-top " alt=" ...">
+        <div class="card-body ">
+          <p class="card-text">Cadastre Jogadores para adicionar aos torneios e atualizar o handicap automaticamente</p>
+        </div>
+      </div>
+      {% endif %}
+    </div>
 
-  <a href="{{ url_for('login') }}" class="btn btn-primary btn-block btn-large">Login</a>
-  <!-- <a href="{{ url_for('register') }}" class="btn btn-secondary btn-block btn-large">Register</a> -->
-
-</div>
-
-{% endblock %}
+    {% endblock %}

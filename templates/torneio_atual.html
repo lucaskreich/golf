@@ -2,96 +2,120 @@
 {% block content %}
 
 
-<div class="box_left">
-    <div>
-        <h2><a href="{{ url_for('resultado_apuracao', id=t.id) }}"> Resultado</a> </h2>
-    </div>
+
+<div>
+    <a class="btn btn-primary" href="{{ url_for('resultado_apuracao', id=t.id) }}" role="button">Resultado</a>
+
+
     {%if t.encerrado !="sim"%}
-    <div>
-        <h2><a href="{{ url_for('add_to_ranking', id=t.id) }}"> Encerrar Torneio</a> </h2>
-    </div>
-    {% endif %}
-    {%if t.encerrado =="sim"%}
-    <div>
-        <h2> Torneio Encerrado! </h2>
-    </div>
-    {% endif %}
-    <div><label for="player">Inscrever Jogador</label>
-        <div>{{t.name}} - {{t.date}}</div>
-        <form action="{{ url_for('torneio_atual', id=t.id) }}" method="post">
-            {% for player in p %}
+
+    <a class="btn btn-primary" href="{{ url_for('add_to_ranking', id=t.id) }}"
+        onClick="confirm('Isso irá encerrar o Torneio, você não poderá mais editá-lo, tem certeza?')"
+        role="button">Encerrar
+        Torneio</a>
+</div>
+{% endif %}
+{%if t.encerrado =="sim"%}
+<div>
+    <h2> Torneio Encerrado! </h2>
+</div>
+{% endif %}
+<h2> {{t.type + " - "+ t.name + " - "+t.date}} </h2>
+<h4>Selecione para inscrever:</h4>
+<form action="{{ url_for('torneio_atual', id=t.id) }}" method="post" class="row gy-2 gx-3 align-items-center">
+    {% for player in p %}
+    <div style="width:auto">
+        <div class="row-auto">
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" value={{player.hcp_id}} name="checkbox_jogadores"
                     id="checkbox_jogadores">
-                <label class="form-check-label" for="checkbox_jogadores">
+                <label class="form-check-label text-danger
+                    " for="checkbox_jogadores">
                     {{player.name}} - {{player.hcp_index}}
                 </label>
-                <input type="text" name="{{player.hcp_id}}_pago" placeholder="Inscrição Paga?" />
-                <input type="text" name="{{player.hcp_id}}_hcp" placeholder="Alterar Hcp?" />
-                <input type="text" name="{{player.hcp_id}}_b_saida" placeholder="Buraco de Saida" />
             </div>
-            {% endfor %}
-            <button type="submit" class="btn btn-primary btn-block btn-large">Cadastrar</button>
-        </form>
-        <div class="jog_cad">
-            <h1 style="padding-top:50px">Jogadores Cadastrados</h1>
-
-            <table class="table table-dark table-bordered ">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Editar</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Hcp</th>
-                        <th scope="col">Pago</th>
-                        <th scope="row">Saida</th>
-                        <th scope="col">v1</th>
-                        <th scope="col">v2</th>
-                        <th scope="col">gross</th>
-                        <th scope="col">net</th>
-                        <th scope="col">v2 net</th>
-
-                        <th scope="col">Desinscrever</th>
 
 
-
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in torneio %}
-                    <tr>
-                        <th scope="row"><a href="/torneio/apuracao/{{row.torneio_id}}/{{row.jogador_id}}"><img
-                                    src="/static/img/edit.png"></a></th>
-                        <th scope="row"><a
-                                href="/torneio/apuracao/{{row.torneio_id}}/{{row.jogador_id}}">{{row.jogador}}</a>
-                        </th>
-
-                        <th scope="row">{{row.hcp}}</th>
-                        <th scope="row">{{row.pago}}</th>
-                        <th scope="row">{{row.b_saida}}</th>
-                        {% if row.total_gross != 999 %}
-                        <th scope="row">{{row.v1_gross}}</th>
-                        <th scope="row">{{row.v2_gross}}</th>
-                        <th scope="row">{{row.total_gross}}</th>
-                        <th scope="row">{{row.total_net}}</th>
-                        <th scope="row">{{row.v2_net}}</th>
-                        {% endif %}
-                        {% if row.total_gross == 999 %}
-                        <th scope="row">DQ</th>
-                        <th scope="row">DQ</th>
-                        <th scope="row">DQ</th>
-                        <th scope="row">DQ</th>
-                        <th scope="row">DQ</th>
-                        {% endif %}
-                        <th scope="row"><a
-                                href="/torneio/apuracao/{{row.torneio_id}}/{{row.jogador_id}}/delete">Desinscrever</a>
-                        </th>
-
-                        {% endfor %}
-                </tbody>
-                </form>
         </div>
-
     </div>
 
 
-    {% endblock %}
+    {% endfor %}
+
+
+    <button type="submit" class="btn btn-primary btn-block btn-large">Cadastrar</button>
+</form>
+<div class="jog_cad">
+    <h1 style="padding-top:50px">Inscritos</h1>
+
+    <table class="table table-dark table-bordered ">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Editar</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Hcp</th>
+                <th scope="col">Pago</th>
+                <th scope="row">Saida</th>
+                <th scope="col">Volta 1</th>
+                <th scope="col">Volta 2</th>
+                <th scope="col">Gross</th>
+                <th scope="col" class="text-primary">Net</th>
+                <th scope="col">Desempate</th>
+
+                <th scope="col">Desinscrever</th>
+
+
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in torneio %}
+            <tr>
+                <th scope="row"><a href="/torneio/apuracao/{{row.torneio_id}}/{{row.jogador_id}}"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-pencil-square" viewBox="0 0 16 16">
+                            <path
+                                d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                            <path fill-rule="evenodd"
+                                d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                        </svg></a></th>
+                <th scope="row"><a href="/torneio/apuracao/{{row.torneio_id}}/{{row.jogador_id}}">{{row.jogador}}</a>
+                </th>
+
+                <th scope="row">{{row.hcp}}</th>
+                <th scope="row">{{row.pago}}</th>
+                <th scope="row">{{row.b_saida}}</th>
+                {% if row.total_gross != 999 %}
+                <th scope="row">{{row.v1_gross}}</th>
+                <th scope="row">{{row.v2_gross}}</th>
+                <th scope="row">{{row.total_gross}}</th>
+                <th scope="row" class="text-primary">{{row.total_net}}</th>
+                <th scope="row">{{row.v2_net}}</th>
+                {% endif %}
+                {% if row.total_gross == 999 %}
+                <th scope="row">DQ</th>
+                <th scope="row">DQ</th>
+                <th scope="row">DQ</th>
+                <th scope="row">DQ</th>
+                <th scope="row">DQ</th>
+                {% endif %}
+                <th scope="row"><a onClick="confirm('Isso irá excluir o Jogador do Clube, tem certeza?')"
+                        href="/torneio/apuracao/{{row.torneio_id}}/{{row.jogador_id}}/delete"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-trash" viewBox="0 0 16 16">
+                            <path
+                                d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                            <path fill-rule="evenodd"
+                                d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                        </svg></a>
+                </th>
+
+                {% endfor %}
+        </tbody>
+        </form>
+</div>
+
+</body>
+
+
+{% endblock %}

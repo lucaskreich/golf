@@ -1,5 +1,5 @@
 # from bs4 import BeautifulSoup
-from ast import Num
+
 from tokenize import Number
 import requests
 from lxml import html
@@ -39,6 +39,8 @@ def get_index(player_id):
 
 
 def calc_hcp_qn(index):
+    if index == None:
+        return 0
     ch = int(round(index * (135/113) + (69.2-72), 0))
     return ch
 

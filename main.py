@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, url_for, redirect, flash, send_from_directory
+from calendar import month
+from tokenize import Number
+from flask import Flask, render_template, request, url_for, redirect, flash
 from sqlalchemy import and_
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
@@ -86,34 +88,34 @@ class Torneio_atual(db.Model):
     senior = db.Column(db.String(100))
     b_saida = db.Column(db.String(100))
     pago = db.Column(db.String(100))
-    b1 = db.Column(db.Integer)
-    b2 = db.Column(db.Integer)
-    b3 = db.Column(db.Integer)
-    b4 = db.Column(db.Integer)
-    b5 = db.Column(db.Integer)
-    b6 = db.Column(db.Integer)
-    b7 = db.Column(db.Integer)
-    b8 = db.Column(db.Integer)
-    b9 = db.Column(db.Integer)
-    b10 = db.Column(db.Integer)
-    b11 = db.Column(db.Integer)
-    b12 = db.Column(db.Integer)
-    b13 = db.Column(db.Integer)
-    b14 = db.Column(db.Integer)
-    b15 = db.Column(db.Integer)
-    b16 = db.Column(db.Integer)
-    b17 = db.Column(db.Integer)
-    b18 = db.Column(db.Integer)
-    v1_gross = db.Column(db.Integer)
-    v2_gross = db.Column(db.Integer)
-    total_gross = db.Column(db.Integer)
-    total_net = db.Column(db.Integer)
-    v2_net = db.Column(db.Integer)
-    ult_6b_net = db.Column(db.Integer)
-    ult_3b_net = db.Column(db.Integer)
-    ult_b_net = db.Column(db.Integer)
-    ganhos = db.Column(db.Integer)
-    pt_rkg = db.Column(db.Integer)
+    b1 = db.Column(db.Integer, default=0)
+    b2 = db.Column(db.Integer, default=0)
+    b3 = db.Column(db.Integer, default=0)
+    b4 = db.Column(db.Integer, default=0)
+    b5 = db.Column(db.Integer, default=0)
+    b6 = db.Column(db.Integer, default=0)
+    b7 = db.Column(db.Integer, default=0)
+    b8 = db.Column(db.Integer, default=0)
+    b9 = db.Column(db.Integer, default=0)
+    b10 = db.Column(db.Integer, default=0)
+    b11 = db.Column(db.Integer, default=0)
+    b12 = db.Column(db.Integer, default=0)
+    b13 = db.Column(db.Integer, default=0)
+    b14 = db.Column(db.Integer, default=0)
+    b15 = db.Column(db.Integer, default=0)
+    b16 = db.Column(db.Integer, default=0)
+    b17 = db.Column(db.Integer, default=0)
+    b18 = db.Column(db.Integer, default=0)
+    v1_gross = db.Column(db.Integer, default=0)
+    v2_gross = db.Column(db.Integer, default=0)
+    total_gross = db.Column(db.Integer, default=0)
+    total_net = db.Column(db.Integer, default=0)
+    v2_net = db.Column(db.Integer, default=0)
+    ult_6b_net = db.Column(db.Integer, default=0)
+    ult_3b_net = db.Column(db.Integer, default=0)
+    ult_b_net = db.Column(db.Integer, default=0)
+    ganhos = db.Column(db.Integer, default=0)
+    pt_rkg = db.Column(db.Integer, default=0)
     obs = db.Column(db.String(100))
 
 
@@ -174,7 +176,7 @@ def login():
             flash("That email does not exist, please try again.")
             return redirect(url_for('login'))
         elif not check_password_hash(user.password, password):
-            flash('Password incorrect, please try again.')
+            ('Password incorrect, please try again.')
             return redirect(url_for('login'))
         else:
             login_user(user)
@@ -183,24 +185,42 @@ def login():
     return render_template("login.html", logged_in=current_user.is_authenticated)
 
 
-@app.route('/clube')
+@app.route('/')
 @login_required
 def clube():
 
-    return render_template("clube.html", name=current_user.name, logged_in=True)
+    return render_template("index.html", name=current_user.name, logged_in=True)
 
 
 @app.route('/criartorneio', methods=["GET", "POST"])
 @login_required
 def criartorneio():
     if request.method == "POST":
+        year = ""
+        month = ""
+        day = ""
+
+        a = 1
+        for i in request.form.get("date"):
+            if a <= 4:
+                year += i
+
+            elif a > 5 and a <= 7:
+                month += i
+            if a > 8:
+                day += i
+            a += 1
+        br_date = day + "/" + month + "/" + year
+        print(br_date)
         new_torneio = Torneios(
             name=request.form.get('name'),
-            date=request.form.get('date'),
+            date=br_date,
             type=request.form.get('type'),
             cat=request.form.get('cat'),
+            encerrado="nao"
 
         )
+        print(request.form.get('date'))
         torneio = Torneios.query.filter_by(
             name=new_torneio.name, date=new_torneio.date).first()
         if not torneio:
@@ -219,6 +239,14 @@ def criartorneio():
                            rows=rows, name=current_user.name, logged_in=True)
 
 
+@app.route('/torneios')
+def torneios():
+    rows = Torneios.query.order_by(Torneios.date.desc()).all()
+    return render_template('torneio.html',
+                           title='Tourneio',
+                           rows=rows)
+
+
 @app.route('/torneio/apuracao/<id>', methods=["GET", "POST"])
 @login_required
 def torneio_atual(id):
@@ -226,63 +254,60 @@ def torneio_atual(id):
 
     if t.encerrado == "sim":
         return resultado_apuracao(id)
-    if request.method == "POST":
+    else:
+        if request.method == "POST":
 
-        inscrito_list = request.form.getlist('checkbox_jogadores')
-        # pega lista de ids selecionadas no checkbox
-        for i in inscrito_list:
+            inscrito_list = request.form.getlist('checkbox_jogadores')
+            # pega lista de ids selecionadas no checkbox
+            for i in inscrito_list:
 
-            inscrito = Torneio_atual.query.filter_by(torneio_id=id,
-                                                     jogador_id=i).first()
-            # transforma id no nome do jogador
-            jogador_name = Player.query.filter_by(hcp_id=i).first()
-            if jogador_name.rest_hcp_qn == 0:
-                hcp = calc_hcp_qn(jogador_name.hcp_index)
-            else:
-                hcp = jogador_name.hcp_qn
+                inscrito = Torneio_atual.query.filter_by(torneio_id=id,
+                                                         jogador_id=i).first()
+                # transforma id no nome do jogador
+                jogador_name = Player.query.filter_by(hcp_id=i).first()
+                if jogador_name.rest_hcp_qn == 0:
+                    hcp = calc_hcp_qn(jogador_name.hcp_index)
+                else:
+                    hcp = jogador_name.hcp_qn
 
-            player = Torneio_atual(
-                jogador_id=i,
-                jogador=jogador_name.name,
-                torneio_id=id,
-                pago=request.form.get(i+'_pago'),
-                b_saida=request.form.get(i+'_b_saida'),
-                hcp=hcp
+                player = Torneio_atual(
+                    jogador_id=i,
+                    jogador=jogador_name.name,
+                    torneio_id=id,
+                    pago="Não",
+                    b_saida="A definir",
+                    hcp=hcp
 
-            )
-            if inscrito:
+                )
+                if inscrito:
 
-                if request.form.get(i+'_hcp') != "":
-                    inscrito.hcp = request.form.get(i+'_hcp')
-                if request.form.get(i+'_b_saida') != "":
-                    inscrito.b_saida = request.form.get(i+'_b_saida')
-                if request.form.get(i+'_pago') != "":
-                    inscrito.pago = request.form.get(i+'_pago')
-                db.session.commit()
+                    if request.form.get(i+'_pago') != "":
+                        inscrito.pago = request.form.get(i+'_pago')
+                    db.session.commit()
 
-                # Editar Pago
-            else:
-                db.session.add(player)
-                db.session.commit()
+                    # Editar Pago
+                else:
+                    db.session.add(player)
+                    db.session.commit()
 
-    t = Torneios.query.filter_by(id=id).first()
-    torneio = Torneio_atual.query.filter_by(
-        torneio_id=id).order_by(Torneio_atual.b_saida.asc(), Torneio_atual.jogador).all()
+        t = Torneios.query.filter_by(id=id).first()
+        torneio = Torneio_atual.query.filter_by(
+            torneio_id=id).order_by(Torneio_atual.b_saida.asc(), Torneio_atual.jogador).all()
 
-    p = Player.query.filter()
+        p = Player.query.filter()
 
-    # checkmark qndo resultado do jogador já tiver sido adicionado( ou mudança de cor)
-    # tela separada, resultado do torneio
-    # botão finalizar torneio (enviar resultado por email? finalizar ranking, calcular valor premiação)
-    # atualizar hcp bluegolf e quarta nobre (botão na aba jogadores?)
-    # aba config, incluir slope, tees de saída, categorias
-    # Ranking
-    # na aba editar jogador, pode desclassificar o jogador e desinscrever
-    # ver erro, clicar no jogar sem buracos cadastrados e clicar em cadastrar sem preencher tudo da erro
+        # checkmark qndo resultado do jogador já tiver sido adicionado( ou mudança de cor)
+        # tela separada, resultado do torneio
+        # botão finalizar torneio (enviar resultado por email? finalizar ranking, calcular valor premiação)
+        # atualizar hcp bluegolf e quarta nobre (botão na aba jogadores?)
+        # aba config, incluir slope, tees de saída, categorias
+        # Ranking
+        # na aba editar jogador, pode desclassificar o jogador e desinscrever
+        # ver erro, clicar no jogar sem buracos cadastrados e clicar em cadastrar sem preencher tudo da erro
 
-    return render_template('torneio_atual.html',
-                           title='Players',
-                           name=current_user.name, t=t, p=p, torneio=torneio, logged_in=True)
+        return render_template('torneio_atual.html',
+                               title='Players',
+                               name=current_user.name, t=t, p=p, torneio=torneio, logged_in=True)
 
 
 @app.route('/torneio/apuracao/<id>/<jogador_id>', methods=["GET", "POST"])
@@ -304,6 +329,7 @@ def add_res_jog(id, jogador_id):
                                    title='Players',
                                    name=current_user.name, t=t, p=p, torneio=torneio, logged_in=True)
         # Consertar essa merda
+
         if request.form.get('hcp') != "":
             inscrito.hcp = request.form.get('hcp')
         if request.form.get('b_saida') != "":
@@ -346,6 +372,7 @@ def add_res_jog(id, jogador_id):
             inscrito.b17 = request.form.get('b17')
         if request.form.get('b18') != "":
             inscrito.b18 = request.form.get('b18')
+
         db.session.commit()
 
         inscrito.v1_gross = inscrito.b1 + inscrito.b2 + inscrito.b3 + inscrito.b4 + \
@@ -378,12 +405,9 @@ def add_res_jog(id, jogador_id):
 @ login_required
 def jogadores():
     if request.method == "POST":
-        if request.form.get('hcp_index') == "":
-            # update from bluegolf
-            index = get_index(request.form.get('hcp_id'))
 
-        else:
-            index = request.form.get('hcp_index')
+        index = get_index(request.form.get('hcp_id'))
+
         new_player = Player(
             email=request.form.get('email'),
             name=request.form.get('name'),
