@@ -37,59 +37,40 @@
       </div>
       {% endif %}
     </div> -->
-<section class="page-section bg-light" id="quarta-nobre">
+<section class="page-section" id="funcionalidades">
   <div class="container">
     <div class="text-center">
-      <h2 class="section-heading text-uppercase">Bem Vindo!</h2>
-      <h3 class="section-subheading text-muted">{{name}}</h3>
+      <h2 class="section-heading text-uppercase">Bem Vindo {{name}}!</h2>
+      <h3 class="section-subheading text-muted">Selecione uma das opções abaixo
     </div>
-    <div class="row">
-      <div class="col-lg-4 col-sm-6 mb-4" onclick="location.href='/torneios'">
-        <!-- quarta-nobre item 1-->
-        <div class="quarta-nobre-item">
-          <a class="quarta-nobre-link" data-bs-toggle="modal">
-            <!-- href=" #quarta-nobreModal1" -->
-            <div class="quarta-nobre-hover">
-              <div class="quarta-nobre-hover-content"><i class="fas fa-plus fa-3x"></i></div>
-            </div>
-            <img style="size:cover" class="img-fluid" src="static/img/tr1.png" alt="..." />
-          </a>
-          <div class="quarta-nobre-caption">
-            <div class="quarta-nobre-caption-heading">Torneios</div>
-            <div class="quarta-nobre-caption-subheading text-muted">Editar torneio em andamento <br> ou criar um novo
-            </div>
-          </div>
-        </div>
+    <div class="row text-center">
+      <div class="col-md-4" onclick="location.href='/jogadores'" style="cursor:pointer">
+        <span class="fa-stack fa-4x">
+          <i class="fas fa-circle fa-stack-2x text-primary"></i>
+          <i class="fas fa-solid fa-person fa-stack-1x fa-inverse"></i>
+        </span>
+        <h4 class="my-3">Cadastro de Jogadores</h4>
+        <p class="text-muted">Adicione Jogadores para atualização automática de Handicap</p>
       </div>
-      <div class="col-lg-4 col-sm-6 mb-4">
-        <!-- quarta-nobre item 2-->
-        <div class="quarta-nobre-item" onclick="location.href='/torneio/apuracao/ranking'">
-          <a class="quarta-nobre-link" data-bs-toggle="modal">
-            <div class="quarta-nobre-hover">
-              <div class="quarta-nobre-hover-content"><i class="fas fa-plus fa-3x"></i></div>
-            </div>
-            <img class="img-fluid" src="static/img/rk1.png" alt="..." />
-          </a>
-          <div class="quarta-nobre-caption">
-            <div class="quarta-nobre-caption-heading">Ranking</div>
-            <div class="quarta-nobre-caption-subheading text-muted">Acompanhar Resultado Geral</div>
-          </div>
-        </div>
+      <div class="col-md-4" onclick="location.href='/torneio/apuracao/ranking'" style="cursor:pointer">
+        <span class="fa-stack fa-4x">
+          <i class="fas fa-circle fa-stack-2x text-primary"></i>
+          <i class="fas fa-list-ol fa-stack-1x fa-inverse"></i>
+        </span>
+        <h4 class="my-3">Ranking</h4>
+        <p class="text-muted">Visualizar o Ranking Quarta Nobre
+        </p>
       </div>
-      <div class="col-lg-4 col-sm-6 mb-4">
-        <!-- quarta-nobre item 3-->
-        <div class="quarta-nobre-item " onclick="location.href='/jogadores'">
-          <a class="quarta-nobre-link" data-bs-toggle="modal">
-            <div class="quarta-nobre-hover">
-              <div class="quarta-nobre-hover-content"><i class="fas fa-plus fa-3x"></i></div>
-            </div>
-            <img class="img-fluid" src="static/img/pl.png" alt="..." />
-          </a>
-          <div class="quarta-nobre-caption">
-            <div class="quarta-nobre-caption-heading">Jogadores</div>
-            <div class="quarta-nobre-caption-subheading text-muted">Cadastro e edição<br>para atualização automatica
-            </div>
-          </div>
-        </div>
+      <div class="col-md-4" onclick="location.href='/criartorneio'" style="cursor:pointer">
+        <span class="fa-stack fa-4x">
+          <i class="fas fa-circle fa-stack-2x text-primary"></i>
+          <i class="fas fa-trophy fa-stack-1x fa-inverse"></i>
+        </span>
+        <h4 class="my-3">Torneios</h4>
+        <p class="text-muted">Crie ou edite Torneios
+        </p>
       </div>
-      {% endblock %}
+    </div>
+  </div>
+</section>
+{% endblock %}
