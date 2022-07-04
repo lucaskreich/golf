@@ -270,11 +270,12 @@ def torneio_atual(id):
                 # transforma id no nome do jogador
                 jogador_name = Player.query.filter_by(hcp_id=i).first()
                 a = get_index(jogador_name.hcp_id)
-                if a==99:
+                if a == 99:
                     hcp = jogador_name.hcp_index
-                else:    
+                else:
                     if jogador_name.rest_hcp_qn == 0:
-                    
+                        jogador_name.hcp_qn = None
+
                         hcp = calc_hcp_qn(a)
                     else:
                         hcp = jogador_name.hcp_qn
