@@ -44,7 +44,7 @@ def calc_hcp_qn(index):
     return ch
 
 
-print(calc_hcp_qn(-3))
+print(calc_hcp_qn(18))
 # A premiação obedecerá ao resultado net de cada jogador na tabela de classificação:
 # Até 4 jogadores – 100% do prêmio ao primeiro colocado;
 # De 05 a 10 jogadores – 70% do prêmio ao primeiro colocado e 30% para o segundo colocado;
