@@ -296,9 +296,9 @@ def torneio_atual(id):
 
         t = Torneios.query.filter_by(id=id).first()
         torneio = Torneio_atual.query.filter_by(
-            torneio_id=id).order_by(Torneio_atual.b_saida.asc(), Torneio_atual.jogador).all()
+            torneio_id=id).order_by(Torneio_atual.hcp.asc(), Torneio_atual.jogador).all()
 
-        p = Player.query.filter()
+        p = Player.query.filter().order_by(Player.hcp_index.asc()).all()
 
         # checkmark qndo resultado do jogador já tiver sido adicionado( ou mudança de cor)
         # tela separada, resultado do torneio
