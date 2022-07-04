@@ -27,7 +27,7 @@ def get_index(player_id):
         '/html/body/div[3]/div[2]/div[2]/div/div/div[1]/div/div/div/div[2]/div[2]/div[1]/strong')
     if a == []:
 
-        return 0.01
+        return 0
     hcp_index = a[0].text
 
     if hcp_index[-1] == "M":

@@ -409,8 +409,8 @@ def add_res_jog(id, jogador_id):
 @ login_required
 def jogadores():
     if request.method == "POST":
-        index = get_index(request.form.get('hcp_index'))
-        if index == 0.01:
+        index = get_index(request.form.get('hcp_id'))
+        if index == 0:
             index = request.form.get('hcp_index')
 
         new_player = Player(
