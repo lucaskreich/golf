@@ -269,11 +269,15 @@ def torneio_atual(id):
                                                          jogador_id=i).first()
                 # transforma id no nome do jogador
                 jogador_name = Player.query.filter_by(hcp_id=i).first()
-                if jogador_name.rest_hcp_qn == 0:
-                    a = get_index(jogador_name.hcp_id)
-                    hcp = calc_hcp_qn(a)
-                else:
-                    hcp = jogador_name.hcp_qn
+                a = get_index(jogador_name.hcp_id)
+                if a==99:
+                    hcp = jogador_name.hcp_index
+                else:    
+                    if jogador_name.rest_hcp_qn == 0:
+                    
+                        hcp = calc_hcp_qn(a)
+                    else:
+                        hcp = jogador_name.hcp_qn
 
                 player = Torneio_atual(
                     jogador_id=i,
@@ -295,24 +299,24 @@ def torneio_atual(id):
                     db.session.add(player)
                     db.session.commit()
 
-        t = Torneios.query.filter_by(id=id).first()
-        torneio = Torneio_atual.query.filter_by(
-            torneio_id=id).order_by(Torneio_atual.hcp.asc(), Torneio_atual.jogador).all()
+    t = Torneios.query.filter_by(id=id).first()
+    torneio = Torneio_atual.query.filter_by(
+        torneio_id=id).order_by(Torneio_atual.jogador.asc(), Torneio_atual.jogador).all()
 
-        p = Player.query.filter().order_by(Player.hcp_index.asc()).all()
+    p = Player.query.filter().order_by(Player.name.asc()).all()
 
-        # checkmark qndo resultado do jogador já tiver sido adicionado( ou mudança de cor)
-        # tela separada, resultado do torneio
-        # botão finalizar torneio (enviar resultado por email? finalizar ranking, calcular valor premiação)
-        # atualizar hcp bluegolf e quarta nobre (botão na aba jogadores?)
-        # aba config, incluir slope, tees de saída, categorias
-        # Ranking
-        # na aba editar jogador, pode desclassificar o jogador e desinscrever
-        # ver erro, clicar no jogar sem buracos cadastrados e clicar em cadastrar sem preencher tudo da erro
+    # checkmark qndo resultado do jogador já tiver sido adicionado( ou mudança de cor)
+    # tela separada, resultado do torneio
+    # botão finalizar torneio (enviar resultado por email? finalizar ranking, calcular valor premiação)
+    # atualizar hcp bluegolf e quarta nobre (botão na aba jogadores?)
+    # aba config, incluir slope, tees de saída, categorias
+    # Ranking
+    # na aba editar jogador, pode desclassificar o jogador e desinscrever
+    # ver erro, clicar no jogar sem buracos cadastrados e clicar em cadastrar sem preencher tudo da erro
 
-        return render_template('torneio_atual.html',
-                               title='Players',
-                               name=current_user.name, t=t, p=p, torneio=torneio, logged_in=True)
+    return render_template('torneio_atual.html',
+                           title='Players',
+                           name=current_user.name, t=t, p=p, torneio=torneio, logged_in=True)
 
 
 @app.route('/torneio/apuracao/<id>/<jogador_id>', methods=["GET", "POST"])

@@ -27,12 +27,14 @@ def get_index(player_id):
         '/html/body/div[3]/div[2]/div[2]/div/div/div[1]/div/div/div/div[2]/div[2]/div[1]/strong')
     if a == []:
 
-        return 0
+        return 99
     hcp_index = a[0].text
 
     if hcp_index[-1] == "M":
         hcp_index = hcp_index[:-1]
 
+    if hcp_index == None:
+        return 99
     return float(hcp_index)
 
 
@@ -40,6 +42,7 @@ def calc_hcp_qn(index):
     print(index)
     if index == None:
         return 0
+
     ch = int(round(index * 135/113 + (69.2-72), 0))
     return ch
 
