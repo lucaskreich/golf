@@ -33,15 +33,18 @@ def get_index(player_id):
     if hcp_index[-1] == "M":
         hcp_index = hcp_index[:-1]
 
-    return hcp_index
+    return float(hcp_index)
 
 
 def calc_hcp_qn(index):
+    print(index)
     if index == None:
         return 0
-    ch = int(round(index * (135/113) + (69.2-72), 0))
+    ch = int(round(index * 135/113 + (69.2-72), 0))
     return ch
 
+
+print(calc_hcp_qn(-3))
 # A premiação obedecerá ao resultado net de cada jogador na tabela de classificação:
 # Até 4 jogadores – 100% do prêmio ao primeiro colocado;
 # De 05 a 10 jogadores – 70% do prêmio ao primeiro colocado e 30% para o segundo colocado;

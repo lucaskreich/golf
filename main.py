@@ -146,7 +146,7 @@ def home2():
     return render_template("index2.html", t=t)
 
 
-@app.route('/register', methods=["GET", "POST"])
+@app.route('/register12345', methods=["GET", "POST"])
 def register():
     if request.method == "POST":
 
@@ -269,7 +269,8 @@ def torneio_atual(id):
                 # transforma id no nome do jogador
                 jogador_name = Player.query.filter_by(hcp_id=i).first()
                 if jogador_name.rest_hcp_qn == 0:
-                    hcp = calc_hcp_qn(jogador_name.hcp_index)
+                    a = get_index(jogador_name.hcp_id)
+                    hcp = calc_hcp_qn(a)
                 else:
                     hcp = jogador_name.hcp_qn
 
