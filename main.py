@@ -7,6 +7,7 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, cur
 import os
 from sqlalchemy.sql import func
 from hcp_index import calc_hcp_qn, get_index
+from flask_talisman import Talisman
 
 
 app = Flask(__name__)
@@ -622,6 +623,8 @@ def config():
 
     return render_template('config.html', name=current_user.name, logged_in=True)
 
+
+Talisman(app, content_security_policy=None)
 
 if __name__ == "__main__":
     app.run(debug=True)
