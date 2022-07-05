@@ -515,7 +515,8 @@ def add_to_ranking(id):
     qnt_jog = Torneio_atual.query.filter_by(torneio_id=id).count()
     print(qnt_jog)
     insc = 40
-    insc_liq = 35
+    taxa = 5
+    insc_liq = insc - taxa
     if qnt_jog < 5:
         valor_list = [1]
     elif qnt_jog >= 5 and qnt_jog <= 10:
@@ -529,6 +530,7 @@ def add_to_ranking(id):
         if a <= 9:
             if a <= len(valor_list)-1:
                 i.ganhos = insc_liq*qnt_jog * valor_list[a]
+                i.ganhos = round(i.ganhos, 2)
             else:
                 i.ganhos = 0
             if i.total_gross == 999:
