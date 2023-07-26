@@ -393,6 +393,10 @@ def add_res_jog(id, jogador_id):
 
         inscrito.total_gross = inscrito.v1_gross + inscrito.v2_gross
         inscrito.total_net = inscrito.total_gross - int(inscrito.hcp)
+        inscrito.v1_net = inscrito.v1_gross - int(inscrito.hcp)/2
+        inscrito.prim_6b_net = (inscrito.v1_gross - inscrito.b1 - inscrito.b2 - inscrito.b3) - ((inscrito.hcp)/3)
+        inscrito.prim_3b_net = (inscrito.b7 + inscrito.b8 + inscrito.b9) - ((inscrito.hcp)/6)
+        inscrito.prim_b_net = inscrito.b9 - ((inscrito.hcp)/18)
         inscrito.v2_net = inscrito.v2_gross - int(inscrito.hcp)/2
         inscrito.ult_6b_net = (inscrito.v2_gross - inscrito.b10 -
                                inscrito.b11 - inscrito.b12) - (int(inscrito.hcp)/3)
@@ -517,22 +521,14 @@ def add_to_ranking(id):
     insc = 50
     taxa = 5
     insc_liq = insc - taxa
-    if qnt_jog < 5:
-        valor_list = [1]
-    elif qnt_jog >= 5 and qnt_jog <= 10:
-        valor_list = [.7, .3]
-    else:
-        valor_list = [.6, .3, .1]
+    valor_total_premio = insc_liq * qnt_jog
+
 
     for i in torneio:
         p = Player.query.filter_by(hcp_id=i.jogador_id).first()
-
+        if a == 0:
+            i.ganhos = round((valor_total_premio / 2 ),2)
         if a <= 9:
-            if a <= len(valor_list)-1:
-                i.ganhos = insc_liq*qnt_jog * valor_list[a]
-                i.ganhos = round(i.ganhos, 2)
-            else:
-                i.ganhos = 0
             if i.total_gross == 999:
                 i.ganhos = 0
                 i.pt_rkg = 0
@@ -557,6 +553,19 @@ def add_to_ranking(id):
             a += 1
             r = Ranking.query.filter_by(player_id=i.jogador_id).first()
             r.pontos += i.pt_rkg
+
+    #CALCULO GANHADOR SEGUNDA VOLTA
+    torneio_segunda_volta = Torneio_atual.query.filter_by(torneio_id=id).order_by(
+    Torneio_atual.v2_net, Torneio_atual.ult_6b_net, Torneio_atual.ult_3b_net, Torneio_atual.ult_b_net).all()
+    campeao_segunda_volta = torneio_segunda_volta[0]
+    campeao_segunda_volta.ganhos = round((valor_total_premio / 4 ),2)
+    
+    #CALCULO GANHADOR PRIMEIRA VOLTA
+
+    torneio_primeira_volta = Torneio_atual.query.filter_by(torneio_id=id).order_by(
+    Torneio_atual.v1_net, Torneio_atual.prim_6b_net, Torneio_atual.prim_3b_net, Torneio_atual.prim_b_net).all()
+    campeao_primeira_volta = torneio_primeira_volta[0]
+    campeao_primeira_volta.ganhos = round((valor_total_premio / 4 ),2)
 
     t = Torneios.query.filter_by(id=id).first()
     t.encerrado = "sim"
