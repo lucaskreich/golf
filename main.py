@@ -509,7 +509,7 @@ def add_to_ranking(id):
         if not i.total_gross:
             return torneio_atual(id)
     pontos_list = [25, 20, 15, 12, 10, 8, 6, 4, 2, 1]
-    a = 0
+    
     # regras valor =
     # até 4 jog = primeiro - 100%
     # 5 a 10 jog = primeiro 70, segundo 30
@@ -523,11 +523,12 @@ def add_to_ranking(id):
     insc_liq = insc - taxa
     valor_total_premio = insc_liq * qnt_jog
 
-
+    a = -1
     for i in torneio:
+        a += 1
         p = Player.query.filter_by(hcp_id=i.jogador_id).first()
         if a == 0:
-            i.ganhos += round((valor_total_premio / 2 ),2)
+            i.ganhos += round(float(valor_total_premio / 2 ),2)
         if a <= 9:
             if i.total_gross == 999:
                 i.ganhos = 0
@@ -550,7 +551,7 @@ def add_to_ranking(id):
                 if p.rest_hcp_qn != 0:
                     p.rest_hcp_qn -= 1
 
-            a += 1
+            
             r = Ranking.query.filter_by(player_id=i.jogador_id).first()
             r.pontos += i.pt_rkg
 
@@ -558,7 +559,7 @@ def add_to_ranking(id):
     torneio_segunda_volta = Torneio_atual.query.filter_by(torneio_id=id).order_by(
     Torneio_atual.v2_net, Torneio_atual.ult_6b_net, Torneio_atual.ult_3b_net, Torneio_atual.ult_b_net).all()
     campeao_segunda_volta = torneio_segunda_volta[0]
-    campeao_segunda_volta.ganhos += round((valor_total_premio / 4 ),2)
+    campeao_segunda_volta.ganhos += round(float(valor_total_premio / 4 ),2)
     
     #CALCULO GANHADOR PRIMEIRA VOLTA
     prim_volta_order = {}
@@ -574,7 +575,7 @@ def add_to_ranking(id):
     prim_volta_order = dict(sorted(prim_volta_order.items(), key=lambda item: item[1]))
     campeao_primeira_volta = Torneio_atual.query.filter_by(torneio_id=id, jogador_id=list(prim_volta_order.keys())[0]).first()
     print(campeao_primeira_volta.jogador,campeao_primeira_volta.ganhos)
-    campeao_primeira_volta.ganhos += round((valor_total_premio / 4 ),2)
+    campeao_primeira_volta.ganhos += round(float(valor_total_premio / 4 ),2)
     db.session.commit()
 
     t = Torneios.query.filter_by(id=id).first()
