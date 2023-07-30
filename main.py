@@ -570,7 +570,7 @@ def add_to_ranking(id):
         prim_6b_net = i.b1 + i.b2 + i.b3 + i.b4 + i.b5 + i.b6 - (i.hcp/3)
         prim_3b_net = i.b7 + i.b8 + i.b9 - (i.hcp/6)
         prim_b_net = i.b9 - (i.hcp/18)
-        if v1_net < prim_volta_order['v1_net'] or len(prim_volta_order) == 0:
+        if v1_net < prim_volta_order.get('v1_net',999) or len(prim_volta_order) == 0:
             prim_volta_order.update({'jogador_id':i.jogador_id,"v1_net":v1_net,"prim_6b_net":prim_6b_net,"prim_3b_net":prim_3b_net,"prim_b_net":prim_b_net})
         elif v1_net == prim_volta_order['v1_net']:
             if prim_6b_net < prim_volta_order['prim_6b_net']:
