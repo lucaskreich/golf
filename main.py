@@ -570,11 +570,19 @@ def add_to_ranking(id):
         prim_6b_net = i.b1 + i.b2 + i.b3 + i.b4 + i.b5 + i.b6 - (i.hcp/3)
         prim_3b_net = i.b7 + i.b8 + i.b9 - (i.hcp/6)
         prim_b_net = i.b9 - (i.hcp/18)
-        prim_volta_order[i.jogador_id] = v1_net + prim_6b_net + prim_3b_net + prim_b_net
-        
-    #ordenar dicionário
-    prim_volta_order = dict(sorted(prim_volta_order.items(), key=lambda item: item[1]))
-    campeao_primeira_volta = Torneio_atual.query.filter_by(torneio_id=id, jogador_id=list(prim_volta_order.keys())[0]).first()
+        if v1_net < prim_volta_order['v1_net'] or len(prim_volta_order) == 0:
+            prim_volta_order.update({'jogador_id':i.jogador_id,"v1_net":v1_net,"prim_6b_net":prim_6b_net,"prim_3b_net":prim_3b_net,"prim_b_net":prim_b_net})
+        elif v1_net == prim_volta_order['v1_net']:
+            if prim_6b_net < prim_volta_order['prim_6b_net']:
+                prim_volta_order.update({'jogador_id':i.jogador_id,"v1_net":v1_net,"prim_6b_net":prim_6b_net,"prim_3b_net":prim_3b_net,"prim_b_net":prim_b_net})
+            elif prim_6b_net == prim_volta_order['prim_6b_net']:
+                if prim_3b_net < prim_volta_order['prim_3b_net']:
+                    prim_volta_order.update({'jogador_id':i.jogador_id,"v1_net":v1_net,"prim_6b_net":prim_6b_net,"prim_3b_net":prim_3b_net,"prim_b_net":prim_b_net})
+                elif prim_3b_net == prim_volta_order['prim_3b_net']:
+                    if prim_b_net < prim_volta_order['prim_b_net']:
+                        prim_volta_order.update({'jogador_id':i.jogador_id,"v1_net":v1_net,"prim_6b_net":prim_6b_net,"prim_3b_net":prim_3b_net,"prim_b_net":prim_b_net})
+
+    campeao_primeira_volta = Torneio_atual.query.filter_by(torneio_id=id, jogador_id=prim_volta_order['jogador_id']).first()
     print(campeao_primeira_volta.jogador,campeao_primeira_volta.ganhos)
     campeao_primeira_volta.ganhos += round(float(valor_total_premio / 4 ),2)
     db.session.commit()
