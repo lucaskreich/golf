@@ -527,7 +527,7 @@ def add_to_ranking(id):
     for i in torneio:
         p = Player.query.filter_by(hcp_id=i.jogador_id).first()
         if a == 0:
-            i.ganhos = round((valor_total_premio / 2 ),2)
+            i.ganhos += round((valor_total_premio / 2 ),2)
         if a <= 9:
             if i.total_gross == 999:
                 i.ganhos = 0
@@ -558,7 +558,7 @@ def add_to_ranking(id):
     torneio_segunda_volta = Torneio_atual.query.filter_by(torneio_id=id).order_by(
     Torneio_atual.v2_net, Torneio_atual.ult_6b_net, Torneio_atual.ult_3b_net, Torneio_atual.ult_b_net).all()
     campeao_segunda_volta = torneio_segunda_volta[0]
-    campeao_segunda_volta.ganhos = round((valor_total_premio / 4 ),2)
+    campeao_segunda_volta.ganhos += round((valor_total_premio / 4 ),2)
     
     #CALCULO GANHADOR PRIMEIRA VOLTA
     prim_volta_order = {}
@@ -573,7 +573,8 @@ def add_to_ranking(id):
     #ordenar dicionário
     prim_volta_order = dict(sorted(prim_volta_order.items(), key=lambda item: item[1]))
     campeao_primeira_volta = Torneio_atual.query.filter_by(torneio_id=id, jogador_id=list(prim_volta_order.keys())[0]).first()
-    campeao_primeira_volta.ganhos = round((valor_total_premio / 4 ),2)
+    print(campeao_primeira_volta.jogador,campeao_primeira_volta.ganhos)
+    campeao_primeira_volta.ganhos += round((valor_total_premio / 4 ),2)
     db.session.commit()
 
     t = Torneios.query.filter_by(id=id).first()
