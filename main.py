@@ -1,6 +1,6 @@
 
 from flask import Flask, render_template, request, url_for, redirect, flash
-
+import decimal
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
@@ -529,7 +529,7 @@ def add_to_ranking(id):
         a += 1
         p = Player.query.filter_by(hcp_id=i.jogador_id).first()
         if a == 0:
-            i.ganhos += round(float(valor_total_premio / 2 ),2)
+            i.ganhos += round(decimal.Decimal(valor_total_premio / 2 ),2)
         if a <= 9:
             if i.total_gross == 999:
                 i.ganhos = 0
@@ -560,7 +560,7 @@ def add_to_ranking(id):
     torneio_segunda_volta = Torneio_atual.query.filter_by(torneio_id=id).order_by(
     Torneio_atual.v2_net, Torneio_atual.ult_6b_net, Torneio_atual.ult_3b_net, Torneio_atual.ult_b_net).all()
     campeao_segunda_volta = torneio_segunda_volta[0]
-    campeao_segunda_volta.ganhos += round(float(valor_total_premio / 4 ),2)
+    campeao_segunda_volta.ganhos += round(decimal.Decimal(valor_total_premio / 4 ),2)
     
     #CALCULO GANHADOR PRIMEIRA VOLTA
     prim_volta_order = {}
@@ -584,7 +584,7 @@ def add_to_ranking(id):
 
     campeao_primeira_volta = Torneio_atual.query.filter_by(torneio_id=id, jogador_id=prim_volta_order['jogador_id']).first()
     print(campeao_primeira_volta.jogador,campeao_primeira_volta.ganhos)
-    campeao_primeira_volta.ganhos += round(float(valor_total_premio / 4 ),2)
+    campeao_primeira_volta.ganhos += round(decimal.Decimal(valor_total_premio / 4 ),2)
     db.session.commit()
 
     t = Torneios.query.filter_by(id=id).first()
