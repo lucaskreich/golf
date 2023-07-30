@@ -516,6 +516,7 @@ def add_to_ranking(id):
     # acima 10 = 60, 30,10
 
     # Contar qntos Jo
+    
     qnt_jog = Torneio_atual.query.filter_by(torneio_id=id).count()
     print(qnt_jog)
     insc = 50
