@@ -131,8 +131,8 @@ class Ranking(db.Model):
     torneio_id = db.Column(db.String(1000))
 
 
+# 
 db.create_all()
-
 
 @app.route('/costao')
 @login_required
@@ -517,22 +517,14 @@ def add_to_ranking(id):
     insc = 50
     taxa = 5
     insc_liq = insc - taxa
-    if qnt_jog < 5:
-        valor_list = [1]
-    elif qnt_jog >= 5 and qnt_jog <= 10:
-        valor_list = [.7, .3]
-    else:
-        valor_list = [.6, .3, .1]
+    valor_total_premio = insc_liq * qnt_jog
+
 
     for i in torneio:
         p = Player.query.filter_by(hcp_id=i.jogador_id).first()
-
+        if a == 0:
+            i.ganhos = round((valor_total_premio / 2 ),2)
         if a <= 9:
-            if a <= len(valor_list)-1:
-                i.ganhos = insc_liq*qnt_jog * valor_list[a]
-                i.ganhos = round(i.ganhos, 2)
-            else:
-                i.ganhos = 0
             if i.total_gross == 999:
                 i.ganhos = 0
                 i.pt_rkg = 0
@@ -557,6 +549,28 @@ def add_to_ranking(id):
             a += 1
             r = Ranking.query.filter_by(player_id=i.jogador_id).first()
             r.pontos += i.pt_rkg
+
+    #CALCULO GANHADOR SEGUNDA VOLTA
+    torneio_segunda_volta = Torneio_atual.query.filter_by(torneio_id=id).order_by(
+    Torneio_atual.v2_net, Torneio_atual.ult_6b_net, Torneio_atual.ult_3b_net, Torneio_atual.ult_b_net).all()
+    campeao_segunda_volta = torneio_segunda_volta[0]
+    campeao_segunda_volta.ganhos = round((valor_total_premio / 4 ),2)
+    
+    #CALCULO GANHADOR PRIMEIRA VOLTA
+    prim_volta_order = {}
+    for i in torneio:
+        #Ordenar jogadores por resultado net da peimeira volta
+        v1_net = i.total_net - i.v2_net
+        prim_6b_net = i.b1 + i.b2 + i.b3 + i.b4 + i.b5 + i.b6 - (i.hcp/3)
+        prim_3b_net = i.b7 + i.b8 + i.b9 - (i.hcp/6)
+        prim_b_net = i.b9 - (i.hcp/18)
+        prim_volta_order[i.jogador_id] = v1_net + prim_6b_net + prim_3b_net + prim_b_net
+        
+    #ordenar dicionário
+    prim_volta_order = dict(sorted(prim_volta_order.items(), key=lambda item: item[1]))
+    campeao_primeira_volta = Torneio_atual.query.filter_by(torneio_id=id, jogador_id=list(prim_volta_order.keys())[0]).first()
+    campeao_primeira_volta.ganhos = round((valor_total_premio / 4 ),2)
+    db.session.commit()
 
     t = Torneios.query.filter_by(id=id).first()
     t.encerrado = "sim"
