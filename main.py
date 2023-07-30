@@ -393,6 +393,10 @@ def add_res_jog(id, jogador_id):
 
         inscrito.total_gross = inscrito.v1_gross + inscrito.v2_gross
         inscrito.total_net = inscrito.total_gross - int(inscrito.hcp)
+        inscrito.v1_net = inscrito.v1_gross - int(inscrito.hcp)/2
+        inscrito.prim_6b_net = (inscrito.v1_gross - inscrito.b1 - inscrito.b2 - inscrito.b3) - ((inscrito.hcp)/3)
+        inscrito.prim_3b_net = (inscrito.b7 + inscrito.b8 + inscrito.b9) - ((inscrito.hcp)/6)
+        inscrito.prim_b_net = inscrito.b9 - ((inscrito.hcp)/18)
         inscrito.v2_net = inscrito.v2_gross - int(inscrito.hcp)/2
         inscrito.ult_6b_net = (inscrito.v2_gross - inscrito.b10 -
                                inscrito.b11 - inscrito.b12) - (int(inscrito.hcp)/3)
