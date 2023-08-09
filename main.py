@@ -520,9 +520,7 @@ def add_to_ranking(id):
     qnt_jog = Torneio_atual.query.filter_by(torneio_id=id).count()
     print(qnt_jog)
     insc = 50
-    taxa = 5
-    insc_liq = insc - taxa
-    valor_total_premio = insc_liq * qnt_jog
+    valor_total_premio = insc * qnt_jog
 
     a = -1
     for i in torneio:
@@ -563,28 +561,40 @@ def add_to_ranking(id):
     campeao_segunda_volta.ganhos += round(decimal.Decimal(valor_total_premio / 4 ),2)
     
     #CALCULO GANHADOR PRIMEIRA VOLTA
-    prim_volta_order = {}
+    jogadores_menores_valores_net = []
+    menor_net_primeira_volta = 999
     for i in torneio:
-        #Ordenar jogadores por resultado net da peimeira volta
+        #Ordenar jogadores por resultado net da primeira volta
         v1_net = i.total_net - i.v2_net
-        prim_6b_net = i.b1 + i.b2 + i.b3 + i.b4 + i.b5 + i.b6 - (i.hcp/3)
-        prim_3b_net = i.b7 + i.b8 + i.b9 - (i.hcp/6)
-        prim_b_net = i.b9 - (i.hcp/18)
-        if v1_net < prim_volta_order.get('v1_net',999) or len(prim_volta_order) == 0:
-            prim_volta_order.update({'jogador_id':i.jogador_id,"v1_net":v1_net,"prim_6b_net":prim_6b_net,"prim_3b_net":prim_3b_net,"prim_b_net":prim_b_net})
-        elif v1_net == prim_volta_order['v1_net']:
-            if prim_6b_net < prim_volta_order['prim_6b_net']:
-                prim_volta_order.update({'jogador_id':i.jogador_id,"v1_net":v1_net,"prim_6b_net":prim_6b_net,"prim_3b_net":prim_3b_net,"prim_b_net":prim_b_net})
-            elif prim_6b_net == prim_volta_order['prim_6b_net']:
-                if prim_3b_net < prim_volta_order['prim_3b_net']:
-                    prim_volta_order.update({'jogador_id':i.jogador_id,"v1_net":v1_net,"prim_6b_net":prim_6b_net,"prim_3b_net":prim_3b_net,"prim_b_net":prim_b_net})
-                elif prim_3b_net == prim_volta_order['prim_3b_net']:
-                    if prim_b_net < prim_volta_order['prim_b_net']:
-                        prim_volta_order.update({'jogador_id':i.jogador_id,"v1_net":v1_net,"prim_6b_net":prim_6b_net,"prim_3b_net":prim_3b_net,"prim_b_net":prim_b_net})
-
-    campeao_primeira_volta = Torneio_atual.query.filter_by(torneio_id=id, jogador_id=prim_volta_order['jogador_id']).first()
-    print(campeao_primeira_volta.jogador,campeao_primeira_volta.ganhos)
-    campeao_primeira_volta.ganhos += round(decimal.Decimal(valor_total_premio / 4 ),2)
+        if v1_net < menor_net_primeira_volta:
+            jogadores_menores_valores_net = [i.jogador_id]
+        if v1_net == menor_net_primeira_volta:
+            jogadores_menores_valores_net.append(i.jogador_id)
+    if len(jogadores_menores_valores_net) > 1:
+        #ordenar jogadores com menor resultado net pelos ultimos 6b, 3b e 1b
+        ultimos_6_b_primeira_volta = 999
+        ultimos_3_b_primeira_volta = 999
+        ultimo_b_primeira_volta = 999
+        for jogador in jogadores_menores_valores_net:
+            ultimos_6_b_primeira_volta_jogador = jogador.b4 + jogador.b5 + jogador.b6 + jogador.b7 + jogador.b8 + jogador.b9
+            ultimos_3_b_primeira_volta_jogador = jogador.b7 + jogador.b8 + jogador.b9
+            ultimo_b_primeira_volta_jogador = jogador.b9
+            if ultimos_6_b_primeira_volta_jogador < ultimos_6_b_primeira_volta:
+                campeao_primeira_volta = jogador
+            if ultimos_6_b_primeira_volta_jogador == ultimos_6_b_primeira_volta:
+                if ultimos_3_b_primeira_volta_jogador < ultimos_3_b_primeira_volta:
+                    campeao_primeira_volta = jogador
+                if ultimos_3_b_primeira_volta_jogador == ultimos_3_b_primeira_volta:
+                    if ultimo_b_primeira_volta_jogador < ultimo_b_primeira_volta:
+                        campeao_primeira_volta = jogador
+    else:
+        campeao_primeira_volta = jogadores_menores_valores_net[0]
+            
+            
+            
+            
+    campeao_primeira_volta_ = Torneio_atual.query.filter_by(jogador_id=campeao_primeira_volta).first()
+    campeao_primeira_volta_.ganhos += round(decimal.Decimal(valor_total_premio / 4 ),2)
     db.session.commit()
 
     t = Torneios.query.filter_by(id=id).first()
